@@ -25,9 +25,11 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
 
   Future<String?> submitButton() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var result = await register(emailTextController.text, passwordTextController.text);
-    if (result == null)
+    var result =
+        await register(emailTextController.text, passwordTextController.text);
+    if (result == null) {
       return null;
+    }
     await prefs.setString("auth", result);
     return result;
   }
@@ -74,24 +76,24 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
                 obscureText: true,
                 controller: password2TextController,
               ),
-              Expanded(child: SizedBox()),
+              const Expanded(child: SizedBox()),
               Container(
                 padding: const EdgeInsets.only(top: 3, left: 3),
                 child: ElevatedButton(
                   onPressed: () => {
-                    submitButton()
-                      .then((value) => {
-                        if (value == null)
-                        {
-                          // Error notification
-                          showFlashError(context, "Registration failed")
-                        }
-                        else
-                        {
-                          Navigator.pushNamed(context, HomePageView.routeName)
-                        }
-                      })
-                    },
+                    submitButton().then((value) => {
+                          if (value == null)
+                            {
+                              // Error notification
+                              showFlashError(context, "Registration failed")
+                            }
+                          else
+                            {
+                              Navigator.pushNamed(
+                                  context, HomePageView.routeName)
+                            }
+                        })
+                  },
                   style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
                       padding: const EdgeInsets.symmetric(vertical: 16),
