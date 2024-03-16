@@ -9,25 +9,20 @@ class AlarmLogic {
   BuildContext? context;
   Timer? timer;
   TimeOfDay alarmTime = TimeOfDay.fromDateTime(DateTime.now());
+  String? currentRoute;
 
   void setContext(BuildContext context) {
     this.context = context;
   }
 
   void checkTime(Timer t) {
-    print("test");
-    //change tick time to every minute once synced on the minute
-    if (DateTime.now().second == 0) {
-      timer?.cancel();
-      timer = Timer.periodic(const Duration(minutes: 1), checkTime);
-    }
-
     loadPrefs();
 
     //Alarm
     TimeOfDay currentTime = TimeOfDay.fromDateTime(DateTime.now());
     if ((currentTime.minute == alarmTime.minute) &&
-        (currentTime.hour == alarmTime.hour)) {
+        (currentTime.hour == alarmTime.hour) &&
+        currentRoute != AlarmPageView.routeName) {
       try {
         Navigator.pushReplacementNamed(context!, AlarmPageView.routeName);
         // ignore: empty_catches

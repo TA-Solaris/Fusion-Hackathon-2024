@@ -72,6 +72,7 @@ class MyApp extends StatelessWidget {
               settings: routeSettings,
               builder: (BuildContext context) {
                 alarmLogic.setContext(context);
+                alarmLogic.currentRoute = routeSettings.name;
                 switch (routeSettings.name) {
                   case HomePageView.routeName:
                     return const HomePageView();
