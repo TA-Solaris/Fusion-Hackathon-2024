@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fusionclock/src/accounts_pages/signin_page_view.dart';
+import 'package:fusionclock/src/backend_interface/backend.dart';
 
 import 'decorated_field.dart';
 
@@ -12,10 +13,15 @@ class RegisterPageView extends StatefulWidget {
   State<RegisterPageView> createState() => RegisterPageState();
 }
 
-class RegisterPageState extends State<RegisterPageView> {
-  void submitButton() {}
-
+class RegisterPageState extends State<RegisterPageView> with BackEnd {
   MaterialColor themeColor = Colors.pink;
+  final emailTextController = TextEditingController();
+  final passwordTextController = TextEditingController();
+  final password2TextController = TextEditingController();
+
+  void submitButton() {
+    register(emailTextController.text, passwordTextController.text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,20 +46,25 @@ class RegisterPageState extends State<RegisterPageView> {
                   )
                 ],
               ),
-              const DecoratedField(icon: Icons.person, text: "Username"),
               const SizedBox(height: 20),
-              const DecoratedField(icon: Icons.email, text: "Email"),
+              DecoratedField(
+                icon: Icons.email,
+                text: "Email",
+                controller: emailTextController,
+              ),
               const SizedBox(height: 20),
-              const DecoratedField(
+              DecoratedField(
                 icon: Icons.password,
                 text: "Password",
                 obscureText: true,
+                controller: passwordTextController,
               ),
               const SizedBox(height: 20),
-              const DecoratedField(
+              DecoratedField(
                 icon: Icons.password,
                 text: "Confirm Password",
                 obscureText: true,
+                controller: password2TextController,
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.3),
               Container(

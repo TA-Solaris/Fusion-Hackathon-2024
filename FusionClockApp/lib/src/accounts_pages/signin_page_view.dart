@@ -14,8 +14,12 @@ class LoginPageView extends StatefulWidget {
 
 class RegisterPageState extends State<LoginPageView> with BackEnd {
   final MaterialColor themeColor = Colors.pink;
-  TextEditingController emailTextController = TextEditingController();
+  final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
+
+  void submitButton() {
+    login(emailTextController.text, passwordTextController.text);
+  }
 
   @override
   void dispose() {
@@ -63,10 +67,7 @@ class RegisterPageState extends State<LoginPageView> with BackEnd {
               Container(
                 padding: const EdgeInsets.only(top: 3, left: 3),
                 child: ElevatedButton(
-                  onPressed: () {
-                    login(
-                        emailTextController.text, passwordTextController.text);
-                  },
+                  onPressed: submitButton,
                   style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
                       padding: const EdgeInsets.symmetric(vertical: 16),
