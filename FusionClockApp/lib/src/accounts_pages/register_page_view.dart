@@ -12,7 +12,7 @@ class RegisterPageView extends StatefulWidget {
 class RegisterPageState extends State<RegisterPageView> {
   void submitButton() {}
 
-  MaterialColor themeColor = Colors.blue;
+  MaterialColor themeColor = Colors.pink;
 
   Widget fieldDecoration(icon, text) {
     return TextField(
