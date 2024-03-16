@@ -127,5 +127,43 @@ namespace Hackathon.Server.Controllers
             return alarmModel;
         }
 
+        [Authorize]
+        [HttpPut("SetAlarmTime/{id}")]
+        public async Task<ActionResult<AlarmModel>> SetAlarmTime(long id, DateTime newTime)
+        {
+            IdentityUser? user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return BadRequest();
+            var alarmModel = await _context.Alarms.FindAsync(id);
+            if (alarmModel == null)
+                return BadRequest();
+            if (alarmModel.User != user)
+                return Unauthorized();
+            if (!alarmModel.IsAlarmReady())
+                return BadRequest();
+            alarmModel.Time = newTime;
+            // When you change an alarms time, the time updates so that you can't cheat the streaks
+            alarmModel.LastTime = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return alarmModel;
+        }
+
+        [Authorize]
+        [HttpGet("GetSharedAlarms/{id}")]
+        public async Task<ActionResult<int>> GetSharedAlarmCount(long id)
+        {
+            IdentityUser? user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return BadRequest();
+            var alarmModel = await _context.Alarms.FindAsync(id);
+            if (alarmModel == null)
+                return BadRequest();
+            if (alarmModel.User != user)
+                return Unauthorized();
+            return await _context.Alarms
+                .Where(alarm => alarm.Time == alarmModel.Time)
+                .CountAsync();
+        }
+
     }
 }
