@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
                   case HomePageView.routeName:
-                    return const RegisterPageView();
+                    return const HomePageView();
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   case AlarmPageView.routeName:
@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
                   case LoginPageView.routeName:
                     return const LoginPageView();
                   default:
-                    return const RegisterPageView();
+                    return const HomePageView();
                 }
               },
             );
