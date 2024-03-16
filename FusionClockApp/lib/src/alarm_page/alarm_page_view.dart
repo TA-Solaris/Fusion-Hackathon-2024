@@ -49,15 +49,22 @@ class AlarmPageView extends StatelessWidget {
             onDismissed: (DismissDirection direction) {
               Navigator.pushReplacementNamed(context, HomePageView.routeName);
             },
-            child: const Text(
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 25,
-                decoration: TextDecoration.none,
-                fontFamily: 'RobotoMono'
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: const Color.fromARGB(59, 179, 179, 179)
               ),
-              'Swipe to dismiss ➤'
-            )
+              child: const Text(
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                  decoration: TextDecoration.none,
+                  fontFamily: 'RobotoMono'
+                ),
+                'Swipe to dismiss ➤'
+              ),
+            ),
           ),
         ],
       ),
