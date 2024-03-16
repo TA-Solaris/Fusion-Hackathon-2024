@@ -4,6 +4,7 @@ using Hackathon.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hackathon.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240316171217_UserGems")]
+    partial class UserGems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace Hackathon.Server.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ApplicationUserApplicationUser", b =>
-                {
-                    b.Property<string>("FriendRequestsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("FriendsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("FriendRequestsId", "FriendsId");
-
-                    b.HasIndex("FriendsId");
-
-                    b.ToTable("ApplicationUserApplicationUser");
-                });
 
             modelBuilder.Entity("Hackathon.Server.Models.AlarmModel", b =>
                 {
@@ -267,21 +255,6 @@ namespace Hackathon.Server.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("ApplicationUserApplicationUser", b =>
-                {
-                    b.HasOne("Hackathon.Server.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("FriendRequestsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Hackathon.Server.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("FriendsId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Hackathon.Server.Models.AlarmModel", b =>

@@ -13,7 +13,7 @@ namespace Hackathon.Server.Models
 
         [JsonIgnore]
         [ProtectedPersonalData]
-        public IdentityUser User { get; set; }
+        public ApplicationUser User { get; set; }
 
         public DateTime Time { get; set; }
 

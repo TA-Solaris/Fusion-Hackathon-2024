@@ -17,9 +17,9 @@ namespace Hackathon.Server.Controllers
     public class AlarmController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AlarmController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public AlarmController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -30,7 +30,7 @@ namespace Hackathon.Server.Controllers
         [Authorize]
         public async Task<ActionResult<IEnumerable<AlarmModel>>> GetAlarms()
         {
-            IdentityUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await _userManager.GetUserAsync(User);
             return await _context.Alarms
                 .Where(alarm => alarm.User == user)
                 .ToListAsync();
@@ -48,7 +48,7 @@ namespace Hackathon.Server.Controllers
                 return NotFound();
             }
 
-            IdentityUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await _userManager.GetUserAsync(User);
             if (user == null)
                 return BadRequest();
             if (alarmModel.User != user)
@@ -63,7 +63,7 @@ namespace Hackathon.Server.Controllers
         [Authorize]
         public async Task<ActionResult<AlarmModel>> PostAlarmModel(DateTime alarmTime)
         {
-            IdentityUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await _userManager.GetUserAsync(User);
             if (user == null)
                 return BadRequest();
             // Create a new alarm
@@ -90,7 +90,7 @@ namespace Hackathon.Server.Controllers
                 return NotFound();
             }
 
-            IdentityUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await _userManager.GetUserAsync(User);
             if (user == null)
                 return BadRequest();
             if (alarmModel.User != user)
@@ -111,7 +111,7 @@ namespace Hackathon.Server.Controllers
         [HttpPut("TriggerAlarm/{id}")]
         public async Task<ActionResult<AlarmModel>> TriggerAlarm(long id)
         {
-            IdentityUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await _userManager.GetUserAsync(User);
             if (user == null)
                 return BadRequest();
             var alarmModel = await _context.Alarms.FindAsync(id);
@@ -131,7 +131,7 @@ namespace Hackathon.Server.Controllers
         [HttpPut("SetAlarmTime/{id}")]
         public async Task<ActionResult<AlarmModel>> SetAlarmTime(long id, DateTime newTime)
         {
-            IdentityUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await _userManager.GetUserAsync(User);
             if (user == null)
                 return BadRequest();
             var alarmModel = await _context.Alarms.FindAsync(id);
@@ -152,7 +152,7 @@ namespace Hackathon.Server.Controllers
         [HttpGet("GetSharedAlarms/{id}")]
         public async Task<ActionResult<int>> GetSharedAlarmCount(long id)
         {
-            IdentityUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await _userManager.GetUserAsync(User);
             if (user == null)
                 return BadRequest();
             var alarmModel = await _context.Alarms.FindAsync(id);
