@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fusionclock/src/accounts_pages/register_page_view.dart';
 import 'package:fusionclock/src/accounts_pages/signin_page_view.dart';
+import 'package:fusionclock/src/alarm_page/alarm_logic.dart';
 import 'package:fusionclock/src/home_page/home_page_view.dart';
 
 import 'settings/settings_controller.dart';
@@ -14,9 +15,11 @@ class MyApp extends StatelessWidget {
   const MyApp({
     super.key,
     required this.settingsController,
+    required this.alarmLogic,
   });
 
   final SettingsController settingsController;
+  final AlarmLogic alarmLogic;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +71,7 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute<void>(
               settings: routeSettings,
               builder: (BuildContext context) {
+                alarmLogic.setContext(context);
                 switch (routeSettings.name) {
                   case HomePageView.routeName:
                     return const HomePageView();
