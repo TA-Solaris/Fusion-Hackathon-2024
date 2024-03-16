@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fusionclock/src/backend_interface/backend.dart';
 
 import 'decorated_field.dart';
 
@@ -11,10 +12,17 @@ class LoginPageView extends StatefulWidget {
   State<LoginPageView> createState() => RegisterPageState();
 }
 
-class RegisterPageState extends State<LoginPageView> {
-  void submitButton() {}
+class RegisterPageState extends State<LoginPageView> with BackEnd {
+  final MaterialColor themeColor = Colors.pink;
+  TextEditingController emailTextController = TextEditingController();
+  final passwordTextController = TextEditingController();
 
-  MaterialColor themeColor = Colors.pink;
+  @override
+  void dispose() {
+    emailTextController.dispose();
+    passwordTextController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,18 +47,26 @@ class RegisterPageState extends State<LoginPageView> {
                   )
                 ],
               ),
-              const DecoratedField(icon: Icons.person, text: "Username"),
+              DecoratedField(
+                icon: Icons.email,
+                text: "Email",
+                controller: emailTextController,
+              ),
               const SizedBox(height: 20),
-              const DecoratedField(
+              DecoratedField(
                 icon: Icons.password,
                 text: "Password",
                 obscureText: true,
+                controller: passwordTextController,
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.55),
               Container(
                 padding: const EdgeInsets.only(top: 3, left: 3),
                 child: ElevatedButton(
-                  onPressed: submitButton,
+                  onPressed: () {
+                    login(
+                        emailTextController.text, passwordTextController.text);
+                  },
                   style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
                       padding: const EdgeInsets.symmetric(vertical: 16),

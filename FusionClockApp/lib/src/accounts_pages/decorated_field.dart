@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class DecoratedField extends StatelessWidget {
   final String? text;
   final IconData? icon;
   final MaterialColor themeColor;
   final bool obscureText;
+  final TextEditingController? controller;
 
   const DecoratedField(
       {super.key,
       this.text,
       this.themeColor = Colors.pink,
       this.icon,
-      this.obscureText = false});
+      this.obscureText = false,
+      this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       obscureText: obscureText,
       decoration: InputDecoration(
           hintText: text,
