@@ -19,16 +19,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var host = Host.CreateDefaultBuilder(args).Build();
-
-using (var scope = host.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
-}
-
-host.Run();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
