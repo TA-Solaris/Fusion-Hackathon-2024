@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'decorated_field.dart';
+
 class RegisterPageView extends StatefulWidget {
   const RegisterPageView({super.key});
 
@@ -13,19 +15,6 @@ class RegisterPageState extends State<RegisterPageView> {
   void submitButton() {}
 
   MaterialColor themeColor = Colors.pink;
-
-  Widget fieldDecoration(icon, text) {
-    return TextField(
-      decoration: InputDecoration(
-          hintText: text,
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(18),
-              borderSide: BorderSide.none),
-          fillColor: themeColor.withOpacity(0.1),
-          filled: true,
-          prefixIcon: Icon(icon)),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +39,21 @@ class RegisterPageState extends State<RegisterPageView> {
                   )
                 ],
               ),
-              fieldDecoration(Icons.person, "Username"),
+              const DecoratedField(icon: Icons.person, text: "Username"),
               const SizedBox(height: 20),
-              fieldDecoration(Icons.email, "Email"),
+              const DecoratedField(icon: Icons.email, text: "Email"),
               const SizedBox(height: 20),
-              fieldDecoration(Icons.password, "Password"),
+              const DecoratedField(
+                icon: Icons.password,
+                text: "Password",
+                obscureText: true,
+              ),
               const SizedBox(height: 20),
-              fieldDecoration(Icons.password, "Confirm Password"),
+              const DecoratedField(
+                icon: Icons.password,
+                text: "Confirm Password",
+                obscureText: true,
+              ),
               const SizedBox(height: 20),
               Container(
                 padding: const EdgeInsets.only(top: 3, left: 3),
