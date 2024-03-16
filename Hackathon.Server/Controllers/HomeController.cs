@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Hackathon.Server.Controllers
 {
-    [Route("debug")]
+    [Route("/debug")]
     [ApiController]
     public class HomeController : Controller
     {
@@ -17,10 +17,10 @@ namespace Hackathon.Server.Controllers
         }
 
         [Authorize]
-        [HttpGet("Get Something")]
-        public int Error()
+        [HttpGet]
+        public int GetNum()
         {
-            return 4;
+            return 1;
         }
     }
 }
