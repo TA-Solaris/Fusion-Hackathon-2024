@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:fusionclock/src/home_page/home_page_view.dart';
+
 class AlarmPageView extends StatelessWidget {
   const AlarmPageView({super.key});
 
@@ -26,9 +28,9 @@ class AlarmPageView extends StatelessWidget {
           ],
         )
       ),
-      child: const Scaffold(
+      child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: Center(
+        body: const Center(
           child: Text(
             style: TextStyle(
               color: Colors.white,
@@ -41,13 +43,19 @@ class AlarmPageView extends StatelessWidget {
           color: Colors.transparent,
           elevation: 0,
           child: Center(
-            child: Text(
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 25,
-              ),
-              'Swipe to dismiss ➤'
-            )
+            child: Dismissible(
+              key: UniqueKey(),
+              onDismissed: (DismissDirection direction) {
+                Navigator.pushReplacementNamed(context, HomePageView.routeName);
+              },
+              child: const Text(
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
+                'Swipe to dismiss ➤'
+              )
+            ),
           ),
         ),
       ),
