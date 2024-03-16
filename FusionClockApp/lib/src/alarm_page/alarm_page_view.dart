@@ -8,9 +8,6 @@ class AlarmPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: const Center(
-        child: Text('10:52 AM'),
-      ),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: FractionalOffset.topLeft,
@@ -28,6 +25,15 @@ class AlarmPageView extends StatelessWidget {
             1.0,
           ],
         )
+      ),
+      child: const Center(
+        child: Text(
+          style: TextStyle(
+            color: Colors.white,
+            decoration: TextDecoration.none,
+          ),
+          '10:52 AM'
+        ),
       ),
     );
   }
