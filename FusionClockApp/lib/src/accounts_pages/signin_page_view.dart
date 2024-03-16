@@ -39,7 +39,6 @@ class RegisterPageState extends State<LoginPageView> with BackEnd {
         height: MediaQuery.of(context).size.height - 50,
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Column(
@@ -63,7 +62,7 @@ class RegisterPageState extends State<LoginPageView> with BackEnd {
                 obscureText: true,
                 controller: passwordTextController,
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.55),
+              Expanded(child: SizedBox()),
               Container(
                 padding: const EdgeInsets.only(top: 3, left: 3),
                 child: ElevatedButton(
@@ -76,6 +75,7 @@ class RegisterPageState extends State<LoginPageView> with BackEnd {
                       style: TextStyle(fontSize: 20, color: Colors.white)),
                 ),
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
