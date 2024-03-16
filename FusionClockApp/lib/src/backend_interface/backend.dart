@@ -9,20 +9,23 @@ mixin BackEnd {
         Uri.parse("$serverAddress/login?useCookies=true"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Access-Control-Allow-Origin': serverAddress
+          'Access-Control-Allow-Origin': 'http://localhost',
+          'Access-Control-Allow-Credentials': 'true',
+          'Access-Control-Expose-Headers': 'true',
         },
         body:
             jsonEncode(<String, String>{'email': email, 'password': password}));
 
     switch (response.statusCode) {
       case 200:
-        String? cookieKey = response.headers["set-cookie"];
-        if (cookieKey == null) return null;
-        final details = cookieKey.split(';');
-        const String cookieAttribute = ".AspNetCore.Identity.Application=";
-        for (int i = 0; i < details.length; i++) {
-          if (details[i].startsWith(cookieAttribute)) {
-            return details[i].substring(cookieAttribute.length);
+        var split = response.body.split("BODY:");
+        var newSplit = split[0].split(";");
+        for (var thing in newSplit)
+        {
+          if (thing.startsWith("Set-Cookie:.AspNetCore.Identity.Application="))
+          {
+            var cookie = thing.substring(44);
+            return cookie;
           }
         }
         return null;
