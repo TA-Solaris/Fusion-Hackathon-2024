@@ -86,7 +86,7 @@ class HomePageState extends State<HomePageView> {
       ),
       body: Column(
         children: [
-          const Center(child: AlarmPageTime()),
+          const Center(child: AlarmPageTime(textColor: Colors.pink)), // TODO - make this follow theme
           ElevatedButton(
               onPressed: alarmUpdated,
               child: Text(
