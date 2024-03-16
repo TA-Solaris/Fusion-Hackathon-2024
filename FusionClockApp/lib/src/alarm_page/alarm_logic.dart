@@ -10,6 +10,7 @@ class AlarmLogic {
   Timer? timer;
   TimeOfDay alarmTime = TimeOfDay.fromDateTime(DateTime.now());
   String? currentRoute;
+  List<bool> daysSelected = List.filled(7, false);
 
   void setContext(BuildContext context) {
     this.context = context;
@@ -23,7 +24,8 @@ class AlarmLogic {
     if ((currentTime.minute == alarmTime.minute) &&
         (currentTime.hour == alarmTime.hour) &&
         (currentTime.second < 2) &&
-        currentRoute != AlarmPageView.routeName) {
+        (daysSelected[currentTime.weekday - 1]) &&
+        (currentRoute != AlarmPageView.routeName)) {
       try {
         Navigator.pushReplacementNamed(context!, AlarmPageView.routeName);
         // ignore: empty_catches
@@ -37,6 +39,9 @@ class AlarmLogic {
     int hours = prefs.getInt('alarm_hour') ?? 7;
     int mins = prefs.getInt('alarm_min') ?? 30;
     alarmTime = TimeOfDay(hour: hours, minute: mins);
+    for (int i = 0; i < 7; i++) {
+      daysSelected[i] = prefs.getBool('alarm_day$i') ?? daysSelected[i];
+    }
   }
 
   AlarmLogic() {
