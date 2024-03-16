@@ -27,7 +27,9 @@ class HomePageState extends State<HomePageView> {
   @override
   Widget build(BuildContext context) {
     List<Widget> topWidgets = [
-      const AlarmPageTime(),
+      const Center(
+        child: AlarmPageTime()
+      ),
       ElevatedButton(
           onPressed: () async {
             var tempTime = await showTimePicker(
