@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Hackathon.Server.BusinessObjects;
+using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,6 +19,11 @@ namespace Hackathon.Server.Models
         public DateTime Time { get; set; }
 
         public int TimesAccepted { get; set; } = 0;
+
+        /// <summary>
+        /// The day of the week
+        /// </summary>
+        public BitFlagDayOfWeek DaysSet { get; set; } = BitFlagDayOfWeek.ALL;
 
         /// <summary>
         /// The last time that the user last accepted this alarm.
