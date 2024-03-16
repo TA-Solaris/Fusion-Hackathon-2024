@@ -90,9 +90,9 @@ class HomePageState extends State<HomePageView> {
           ElevatedButton(
               onPressed: alarmUpdated,
               child: Text(
-                "Alarm: ${formatTime()}",
+                "Alarm at ${formatTime()}",
                 style: const TextStyle(
-                    fontSize: 80,
+                    fontSize: 45,
                     decoration: TextDecoration.none,
                     fontFamily: 'RobotoMono'),
               ))
