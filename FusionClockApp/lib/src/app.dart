@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fusionclock/src/accounts_pages/register_page_view.dart';
+import 'package:fusionclock/src/accounts_pages/signin_page_view.dart';
 import 'package:fusionclock/src/home_page/home_page_view.dart';
 
 import 'settings/settings_controller.dart';
@@ -69,15 +70,17 @@ class MyApp extends StatelessWidget {
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
                   case HomePageView.routeName:
-                    return const HomePageView();
+                    return const RegisterPageView();
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   case AlarmPageView.routeName:
                     return const AlarmPageView();
                   case RegisterPageView.routeName:
                     return const RegisterPageView();
+                  case LoginPageView.routeName:
+                    return const LoginPageView();
                   default:
-                    return const HomePageView();
+                    return const RegisterPageView();
                 }
               },
             );
