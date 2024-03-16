@@ -11,7 +11,7 @@ class AlarmPageView extends StatelessWidget {
       child: const Center(
         child: Text('10:52 AM'),
       ),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: FractionalOffset.topLeft,
           end: FractionalOffset.bottomRight,
