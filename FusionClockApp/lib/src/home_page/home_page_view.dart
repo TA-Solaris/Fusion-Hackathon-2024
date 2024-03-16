@@ -1,37 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fusionclock/src/alarm_page/alarm_page_time.dart';
 
 import '../settings/settings_view.dart';
 import 'home_page_stat.dart';
 import '../alarm_page/alarm_page_view.dart';
 
-class HomePageView extends StatelessWidget {
-  const HomePageView({
-    super.key,
-    this.items = const [HomePageStatItem(1), HomePageStatItem(2)],
-  });
+class HomePageView extends StatefulWidget {
+  const HomePageView({super.key});
 
   static const routeName = '/';
 
-  final List<HomePageStatItem> items;
+  @override
+  State<HomePageView> createState() => HomePageState();
+}
+
+class HomePageState extends State<HomePageView> {
+  List<HomePageStatItem> items = const [
+    HomePageStatItem(1),
+    HomePageStatItem(2)
+  ];
+
+  TimeOfDay alarmTime = TimeOfDay.fromDateTime(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
     List<Widget> topWidgets = [
-      Container(
-        child: Text('14:19:23'),
-      ),
-      const Text('Alarm Time')
+      const AlarmPageTime(),
+      ElevatedButton(
+          onPressed: () async {
+            var tempTime = await showTimePicker(
+                    context: context, initialTime: alarmTime) ??
+                alarmTime;
+            setState(() {
+              alarmTime = tempTime;
+            });
+          },
+          child: Text(alarmTime.toString()))
     ];
 
     return Scaffold(
         appBar: AppBar(
           title: const Text('FusionClock'),
           actions: [
-            IconButton( // TEMP BUTTON
+            IconButton(
+              // TEMP BUTTON
               icon: const Icon(Icons.alarm),
               onPressed: () {
-                Navigator.pushReplacementNamed(context, AlarmPageView.routeName);
+                Navigator.pushReplacementNamed(
+                    context, AlarmPageView.routeName);
               },
             ),
             IconButton(
