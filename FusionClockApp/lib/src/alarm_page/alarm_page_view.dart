@@ -26,13 +26,29 @@ class AlarmPageView extends StatelessWidget {
           ],
         )
       ),
-      child: const Center(
-        child: Text(
-          style: TextStyle(
-            color: Colors.white,
-            decoration: TextDecoration.none,
+      child: const Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: Text(
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 80,
+            ),
+            '10:52 AM'
           ),
-          '10:52 AM'
+        ),
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.transparent,
+          elevation: 0,
+          child: Center(
+            child: Text(
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 25,
+              ),
+              'Swipe to dismiss ➤'
+            )
+          ),
         ),
       ),
     );
