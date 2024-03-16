@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Hackathon.Server.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hackathon.Server.Data
@@ -9,5 +10,8 @@ namespace Hackathon.Server.Data
             : base(options)
         {
         }
+
+        public DbSet<AlarmModel> Alarms { get; set; } = null!;
+
     }
 }
