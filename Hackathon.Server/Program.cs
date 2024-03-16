@@ -1,4 +1,5 @@
 using Hackathon.Server.Data;
+using Hackathon.Server.Hubs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddSwaggerGen();
+builder.Services.AddSignalR();
 
 builder.Services.AddAuthorization();
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
@@ -45,6 +47,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ReactionHub>("/reactionHub");
 
 app.Run();
 
