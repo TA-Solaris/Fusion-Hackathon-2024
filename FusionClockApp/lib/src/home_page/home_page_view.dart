@@ -43,6 +43,9 @@ class HomePageState extends State<HomePageView> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int hours = prefs.getInt('alarm_hour') ?? 7;
     int mins = prefs.getInt('alarm_min') ?? 30;
+    for (int i = 0; i < 7; i++) {
+      daysSelected[i] = prefs.getBool('alarm_day$i') ?? daysSelected[i];
+    }
     setState(() {
       alarmTime = TimeOfDay(hour: hours, minute: mins);
     });
@@ -53,10 +56,13 @@ class HomePageState extends State<HomePageView> {
     if (i % 2 == 0) {
       i = i ~/ 2;
       return ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             setState(() {
               daysSelected[i] = !daysSelected[i];
             });
+            final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+            await prefs.setBool('alarm_day$i', daysSelected[i]);
           },
           style: ElevatedButton.styleFrom(
               backgroundColor:
