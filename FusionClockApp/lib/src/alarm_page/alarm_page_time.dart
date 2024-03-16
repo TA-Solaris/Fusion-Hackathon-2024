@@ -1,15 +1,41 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
-class AlarmPageTime extends StatelessWidget {
+class AlarmPageTime extends StatefulWidget {
   const AlarmPageTime({super.key});
+  
+  @override
+  State<StatefulWidget> createState() => AlarmPageTimeState();
+}
+
+class AlarmPageTimeState extends State<AlarmPageTime> {
+
+  String timeString = "";
+
+  getTimeString() {
+    final DateTime now = DateTime.now();
+    final String formattedTime = formatTime(now);
+
+    setState(() {
+      timeString = formattedTime;
+    });
+  }
+
+  String formatTime(DateTime dateTime) {
+    return "${dateTime.hour}:${dateTime.minute}:${dateTime.second}";
+  }
+
+  @override
+  void initState() {
+    getTimeString();
+
+    Timer.periodic(const Duration(seconds: 1), (Timer t) => getTimeString());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    // Getting the current time
-    DateTime now = DateTime.now();
-    String formattedDate = "${now.hour}:${now.minute}:${now.second}";
-
     return Text(
       style: const TextStyle(
         color: Colors.white,
@@ -17,7 +43,7 @@ class AlarmPageTime extends StatelessWidget {
         decoration: TextDecoration.none,
         fontFamily: 'RobotoMono'
       ),
-      formattedDate
+      timeString
     );
   }
 }
