@@ -16,12 +16,14 @@ class HomePageView extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePageView> {
-
   TimeOfDay alarmTime = TimeOfDay.fromDateTime(DateTime.now());
+
+  String formatTime() {
+    return "${alarmTime.hour.toString().padLeft(2, '0')}:${alarmTime.minute.toString().padLeft(2, '0')}";
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('FusionClock'),
@@ -30,8 +32,7 @@ class HomePageState extends State<HomePageView> {
             // TEMP BUTTON
             icon: const Icon(Icons.alarm),
             onPressed: () {
-              Navigator.pushReplacementNamed(
-                  context, AlarmPageView.routeName);
+              Navigator.pushReplacementNamed(context, AlarmPageView.routeName);
             },
           ),
           IconButton(
@@ -54,24 +55,25 @@ class HomePageState extends State<HomePageView> {
       ),
       body: Column(
         children: [
-          const Center(
-            child: AlarmPageTime()
-          ),
+          const Center(child: AlarmPageTime()),
           ElevatedButton(
-            onPressed: () async {
-              var tempTime = await showTimePicker(
-                      context: context, initialTime: alarmTime) ??
-                  alarmTime;
-              setState(() {
-                alarmTime = tempTime;
-              });
-            },
-            child: Text(
-              alarmTime.toString()
-            )
-          )
+              onPressed: () async {
+                var tempTime = await showTimePicker(
+                        context: context, initialTime: alarmTime) ??
+                    alarmTime;
+                setState(() {
+                  alarmTime = tempTime;
+                });
+              },
+              child: Text(
+                "Alarm: ${formatTime()}",
+                style: const TextStyle(
+                    fontSize: 80,
+                    decoration: TextDecoration.none,
+                    fontFamily: 'RobotoMono'),
+              ))
         ],
-      ), 
+      ),
     );
   }
 }
