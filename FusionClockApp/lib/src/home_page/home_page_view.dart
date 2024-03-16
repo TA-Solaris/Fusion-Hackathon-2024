@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 
 import '../settings/settings_view.dart';
 import 'home_page_stat.dart';
+import '../alarm_page/alarm_page_view.dart';
 
-/// Displays a list of SampleItems.
 class HomePageView extends StatelessWidget {
   const HomePageView({
     super.key,
@@ -28,12 +28,15 @@ class HomePageView extends StatelessWidget {
         appBar: AppBar(
           title: const Text('FusionClock'),
           actions: [
+            IconButton( // TEMP BUTTON
+              icon: const Icon(Icons.alarm),
+              onPressed: () {
+                Navigator.restorablePushNamed(context, AlarmPageView.routeName);
+              },
+            ),
             IconButton(
               icon: const Icon(Icons.settings),
               onPressed: () {
-                // Navigate to the settings page. If the user leaves and returns
-                // to the app after it has been killed while running in the
-                // background, the navigation stack is restored.
                 Navigator.restorablePushNamed(context, SettingsView.routeName);
               },
             ),

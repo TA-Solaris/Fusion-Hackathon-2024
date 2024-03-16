@@ -5,6 +5,7 @@ import 'package:fusionclock/src/home_page/home_page_view.dart';
 
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
+import 'alarm_page/alarm_page_view.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -66,10 +67,12 @@ class MyApp extends StatelessWidget {
               settings: routeSettings,
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
-                  case SettingsView.routeName:
-                    return SettingsView(controller: settingsController);
                   case HomePageView.routeName:
                     return const HomePageView();
+                  case SettingsView.routeName:
+                    return SettingsView(controller: settingsController);
+                  case AlarmPageView.routeName:
+                    return const AlarmPageView();
                   default:
                     return const HomePageView();
                 }
