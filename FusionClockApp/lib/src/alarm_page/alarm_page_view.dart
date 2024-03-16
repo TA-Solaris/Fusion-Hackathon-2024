@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:fusionclock/src/home_page/home_page_view.dart';
+import 'package:fusionclock/src/alarm_page/alarm_page_time.dart';
 
 class AlarmPageView extends StatelessWidget {
   const AlarmPageView({super.key});
@@ -32,15 +33,7 @@ class AlarmPageView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Text(
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 80,
-              decoration: TextDecoration.none,
-              fontFamily: 'RobotoMono'
-            ),
-            '10:52 AM'
-          ),
+          const AlarmPageTime(),
           const SizedBox(
             height: 100
           ),
