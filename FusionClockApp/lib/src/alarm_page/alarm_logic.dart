@@ -19,9 +19,10 @@ class AlarmLogic {
     loadPrefs();
 
     //Alarm
-    TimeOfDay currentTime = TimeOfDay.fromDateTime(DateTime.now());
+    DateTime currentTime = DateTime.now();
     if ((currentTime.minute == alarmTime.minute) &&
         (currentTime.hour == alarmTime.hour) &&
+        (currentTime.second < 2) &&
         currentRoute != AlarmPageView.routeName) {
       try {
         Navigator.pushReplacementNamed(context!, AlarmPageView.routeName);
