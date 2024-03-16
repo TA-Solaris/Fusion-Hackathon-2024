@@ -12,6 +12,8 @@ class RegisterPageView extends StatefulWidget {
 class RegisterPageState extends State<RegisterPageView> {
   void submitButton() {}
 
+  MaterialColor themeColor = Colors.blue;
+
   Widget fieldDecoration(icon, text) {
     return TextField(
       decoration: InputDecoration(
@@ -19,7 +21,7 @@ class RegisterPageState extends State<RegisterPageView> {
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(18),
               borderSide: BorderSide.none),
-          fillColor: Colors.purple.withOpacity(0.1),
+          fillColor: themeColor.withOpacity(0.1),
           filled: true,
           prefixIcon: Icon(icon)),
     );
@@ -31,13 +33,23 @@ class RegisterPageState extends State<RegisterPageView> {
       appBar: AppBar(
         title: const Text('Account Register'),
       ),
-      body: Padding(
+      body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 40),
+        height: MediaQuery.of(context).size.height - 50,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const Column(
+                children: [
+                  SizedBox(height: 60),
+                  Text(
+                    "Sign Up",
+                    style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
               fieldDecoration(Icons.person, "Username"),
               const SizedBox(height: 20),
               fieldDecoration(Icons.email, "Email"),
@@ -46,7 +58,35 @@ class RegisterPageState extends State<RegisterPageView> {
               const SizedBox(height: 20),
               fieldDecoration(Icons.password, "Confirm Password"),
               const SizedBox(height: 20),
-              ElevatedButton(onPressed: submitButton, child: Text('Login'))
+              Container(
+                padding: const EdgeInsets.only(top: 3, left: 3),
+                child: ElevatedButton(
+                  onPressed: submitButton,
+                  style: ElevatedButton.styleFrom(
+                      shape: const StadiumBorder(),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: themeColor),
+                  child: const Text('Sign Up',
+                      style: TextStyle(fontSize: 20, color: Colors.white)),
+                ),
+              ),
+              const Center(
+                child: Text(
+                  "OR",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(top: 3, left: 3),
+                child: ElevatedButton(
+                  onPressed: submitButton,
+                  style: ElevatedButton.styleFrom(
+                      shape: const StadiumBorder(),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: themeColor.shade100),
+                  child: const Text('Login', style: TextStyle(fontSize: 20)),
+                ),
+              )
             ],
           ),
         ),
