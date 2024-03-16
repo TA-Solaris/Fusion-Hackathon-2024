@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 class AlarmPageTime extends StatefulWidget {
   const AlarmPageTime({
-    Key? key,
+    super.key,
     this.textColor = Colors.white,
-  }) : super(key: key);
+  });
 
   final Color textColor;
 
@@ -37,8 +37,7 @@ class AlarmPageTimeState extends State<AlarmPageTime> {
     getTimeString();
 
     timer = Timer.periodic(
-      const Duration(seconds: 1), (Timer t) => getTimeString()
-    );
+        const Duration(seconds: 1), (Timer t) => getTimeString());
   }
 
   @override
@@ -52,11 +51,10 @@ class AlarmPageTimeState extends State<AlarmPageTime> {
     return Text(
       timeString,
       style: TextStyle(
-        color: widget.textColor,
-        fontSize: 80,
-        decoration: TextDecoration.none,
-        fontFamily: 'RobotoMono'
-      ),
+          color: widget.textColor,
+          fontSize: 80,
+          decoration: TextDecoration.none,
+          fontFamily: 'RobotoMono'),
     );
   }
 }
