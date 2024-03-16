@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fusionclock/src/accounts_pages/register_page_view.dart';
 import 'package:fusionclock/src/alarm_page/alarm_page_time.dart';
 
 import '../settings/settings_view.dart';
@@ -57,6 +58,16 @@ class HomePageState extends State<HomePageView> {
                 Navigator.restorablePushNamed(context, SettingsView.routeName);
               },
             ),
+            IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                Navigator.restorablePushNamed(
+                    context, RegisterPageView.routeName);
+              },
+            ),
+            const SizedBox(
+              width: 40,
+            )
           ],
         ),
         body: ListView.builder(
