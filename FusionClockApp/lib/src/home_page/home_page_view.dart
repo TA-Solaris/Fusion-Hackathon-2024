@@ -31,7 +31,7 @@ class HomePageView extends StatelessWidget {
             IconButton( // TEMP BUTTON
               icon: const Icon(Icons.alarm),
               onPressed: () {
-                Navigator.restorablePushNamed(context, AlarmPageView.routeName);
+                Navigator.pushReplacementNamed(context, AlarmPageView.routeName);
               },
             ),
             IconButton(

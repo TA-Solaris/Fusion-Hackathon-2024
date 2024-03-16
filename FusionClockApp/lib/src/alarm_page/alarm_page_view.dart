@@ -7,12 +7,27 @@ class AlarmPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Alarm'),
+    return Container(
+      child: const Center(
+        child: Text('10:52 AM'),
       ),
-      body: const Center(
-        child: Text('TODO - Implement'),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: FractionalOffset.topLeft,
+          end: FractionalOffset.bottomRight,
+          colors: [
+            Color.fromARGB(255, 56, 9, 60),
+            Color.fromARGB(255, 121, 24, 139),
+            Colors.pink,
+            Color.fromARGB(255, 219, 186, 127),
+          ],
+          stops: [
+            0.0,
+            0.2,
+            0.8,
+            1.0,
+          ],
+        )
       ),
     );
   }
