@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:fusionclock/src/accounts_pages/signin_page_view.dart';
 
 import 'decorated_field.dart';
 
-class RegisterPageView extends StatefulWidget {
-  const RegisterPageView({super.key});
+class LoginPageView extends StatefulWidget {
+  const LoginPageView({super.key});
 
-  static const routeName = '/register';
+  static const routeName = '/login';
 
   @override
-  State<RegisterPageView> createState() => RegisterPageState();
+  State<LoginPageView> createState() => RegisterPageState();
 }
 
-class RegisterPageState extends State<RegisterPageView> {
+class RegisterPageState extends State<LoginPageView> {
   void submitButton() {}
 
   MaterialColor themeColor = Colors.pink;
@@ -21,7 +20,7 @@ class RegisterPageState extends State<RegisterPageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Account Register'),
+        title: const Text('Account Login'),
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -35,27 +34,19 @@ class RegisterPageState extends State<RegisterPageView> {
                 children: [
                   SizedBox(height: 60),
                   Text(
-                    "Sign Up",
+                    "Login",
                     style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
                   )
                 ],
               ),
               const DecoratedField(icon: Icons.person, text: "Username"),
               const SizedBox(height: 20),
-              const DecoratedField(icon: Icons.email, text: "Email"),
-              const SizedBox(height: 20),
               const DecoratedField(
                 icon: Icons.password,
                 text: "Password",
                 obscureText: true,
               ),
-              const SizedBox(height: 20),
-              const DecoratedField(
-                icon: Icons.password,
-                text: "Confirm Password",
-                obscureText: true,
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.3),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.55),
               Container(
                 padding: const EdgeInsets.only(top: 3, left: 3),
                 child: ElevatedButton(
@@ -64,30 +55,10 @@ class RegisterPageState extends State<RegisterPageView> {
                       shape: const StadiumBorder(),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       backgroundColor: themeColor),
-                  child: const Text('Sign Up',
+                  child: const Text('Login',
                       style: TextStyle(fontSize: 20, color: Colors.white)),
                 ),
               ),
-              const Center(
-                child: Text(
-                  "OR",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 3, left: 3),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(
-                        context, LoginPageView.routeName);
-                  },
-                  style: ElevatedButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: themeColor.shade100),
-                  child: const Text('Login', style: TextStyle(fontSize: 20)),
-                ),
-              )
             ],
           ),
         ),
