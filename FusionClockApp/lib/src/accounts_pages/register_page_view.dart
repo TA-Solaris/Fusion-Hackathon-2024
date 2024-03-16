@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fusionclock/src/accounts_pages/signin_page_view.dart';
 import 'package:fusionclock/src/backend_interface/backend.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../ErrorBar/error_bar.dart';
+
+import '../home_page/home_page_view.dart';
 import 'decorated_field.dart';
 
 class RegisterPageView extends StatefulWidget {
@@ -19,8 +23,13 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
   final passwordTextController = TextEditingController();
   final password2TextController = TextEditingController();
 
-  void submitButton() {
-    register(emailTextController.text, passwordTextController.text);
+  Future<String?> submitButton() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var result = await register(emailTextController.text, passwordTextController.text);
+    if (result == null)
+      return null;
+    await prefs.setString("auth", result);
+    return result;
   }
 
   @override
@@ -69,7 +78,20 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
               Container(
                 padding: const EdgeInsets.only(top: 3, left: 3),
                 child: ElevatedButton(
-                  onPressed: submitButton,
+                  onPressed: () => {
+                    submitButton()
+                      .then((value) => {
+                        if (value == null)
+                        {
+                          // Error notification
+                          showFlashError(context, "Registration failed")
+                        }
+                        else
+                        {
+                          Navigator.pushNamed(context, HomePageView.routeName)
+                        }
+                      })
+                    },
                   style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
                       padding: const EdgeInsets.symmetric(vertical: 16),
