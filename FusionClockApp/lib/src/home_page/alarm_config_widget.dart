@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fusionclock/src/backend_interface/backend.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AlarmConfig extends StatefulWidget {
@@ -12,7 +13,7 @@ class AlarmConfig extends StatefulWidget {
   State<AlarmConfig> createState() => _AlarmConfigState();
 }
 
-class _AlarmConfigState extends State<AlarmConfig> {
+class _AlarmConfigState extends State<AlarmConfig> with BackEnd {
   TimeOfDay alarmTime = TimeOfDay.fromDateTime(DateTime.now());
   List<bool> daysSelected = List.filled(5, true) + List.filled(2, false);
   final MaterialColor theme = Colors.pink;
@@ -47,6 +48,7 @@ class _AlarmConfigState extends State<AlarmConfig> {
     int numAlarms = prefs.getInt('num_alarms') ?? 0;
     await prefs.setInt(
         'num_alarms', widget.id >= numAlarms ? widget.id : numAlarms);
+    updateAlarmTime(widget.id, TimeOfDay(hour: hours, minute: mins));
     setState(() {
       alarmTime = TimeOfDay(hour: hours, minute: mins);
     });
