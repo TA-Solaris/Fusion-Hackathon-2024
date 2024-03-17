@@ -52,7 +52,7 @@ class HomePageState extends State<HomePageView> with BackEnd {
 
   @override
   Widget build(BuildContext context) {
-    //checkAuth(context); //TODO enable to force login
+    checkAuth(context); //TODO enable to force login
     return Scaffold(
       appBar: AppBar(
         title: const Text('Fusion Clock'),
@@ -122,11 +122,11 @@ class HomePageState extends State<HomePageView> with BackEnd {
                                 width: 400,
                                 height: 50,
                                 child: Icon(Icons.add))),
-                      Text("🔥",
+                      const Text("🔥",
                           style: TextStyle(
                             fontSize: 140,
                           )),
-                      Text("Streak: 7 days",
+                      const Text("Streak: 7 days",
                           style: TextStyle(
                             fontSize: 42,
                           ))

@@ -82,7 +82,7 @@ class GemPaymentState extends State<GemPayment> {
                 color: Colors.white,
               ),
             ),
-            SizedBox(width: 20),
+            SizedBox(width: 12),
             Icon(
               Icons.shopping_cart, // Use the shopping cart icon
               color: Colors.white, // Customize the color as needed
