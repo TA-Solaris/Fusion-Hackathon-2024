@@ -23,13 +23,12 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
   final passwordTextController = TextEditingController();
   final password2TextController = TextEditingController();
 
-  Future<String?> submitButton() async {
+  Future<bool> submitButton() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var result = await register(emailTextController.text, passwordTextController.text);
     if (result == null)
-      return null;
-    await prefs.setString("auth", result);
-    return result;
+      return false;
+    return true;
   }
 
   @override
@@ -81,7 +80,7 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
                   onPressed: () => {
                     submitButton()
                       .then((value) => {
-                        if (value == null)
+                        if (!value)
                         {
                           // Error notification
                           showFlashError(context, "Registration failed")

@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../settings/settings_view.dart';
 import '../alarm_page/alarm_page_view.dart';
+import '../backend_interface/backend.dart';
 
 class HomePageView extends StatefulWidget {
   const HomePageView({super.key});
@@ -16,7 +17,7 @@ class HomePageView extends StatefulWidget {
   State<HomePageView> createState() => HomePageState();
 }
 
-class HomePageState extends State<HomePageView> {
+class HomePageState extends State<HomePageView> with BackEnd {
   TimeOfDay alarmTime = TimeOfDay.fromDateTime(DateTime.now());
 
   String formatTime() {
@@ -42,15 +43,21 @@ class HomePageState extends State<HomePageView> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int hours = prefs.getInt('alarm_hour') ?? 7;
     int mins = prefs.getInt('alarm_min') ?? 30;
+
     setState(() {
       alarmTime = TimeOfDay(hour: hours, minute: mins);
     });
+  }
+
+  Future<String?> loadAlarms() async {
+    await getAlarms();
   }
 
   @override
   void initState() {
     super.initState();
     loadPrefs();
+    loadAlarms();
   }
 
   @override
@@ -85,17 +92,40 @@ class HomePageState extends State<HomePageView> {
         ],
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Center(child: AlarmPageTime(textColor: Colors.pink)), // TODO - make this follow theme
-          ElevatedButton(
-              onPressed: alarmUpdated,
-              child: Text(
-                "Alarm at ${formatTime()}",
+          Column(
+            children: [
+              SizedBox(height: 10),
+              const Center(child: AlarmPageTime(textColor: Colors.pink)), // TODO - make this follow theme
+              ElevatedButton(
+                  onPressed: alarmUpdated,
+                  child: Text(
+                    "Alarm at ${formatTime()}",
+                    style: const TextStyle(
+                        fontSize: 45,
+                        decoration: TextDecoration.none,
+                        fontFamily: 'RobotoMono'),
+                  )),
+            ],
+          ),
+          Column(
+            children: [
+              Text(
+                "🔥",
                 style: const TextStyle(
-                    fontSize: 45,
-                    decoration: TextDecoration.none,
-                    fontFamily: 'RobotoMono'),
-              ))
+                  fontSize: 140,
+                )
+              ),
+              Text(
+                "Streak: 7 days",
+                style: const TextStyle(
+                  fontSize: 42,
+                )
+              )
+            ],
+          ),
+          SizedBox(height: 300),
         ],
       ),
     );
