@@ -1,5 +1,8 @@
+import 'dart:js_util';
+
 import 'package:flutter/material.dart';
 import 'package:fusionclock/src/accounts_pages/register_page_view.dart';
+import 'package:fusionclock/src/alarm_page/alarm_logic.dart';
 import 'package:fusionclock/src/alarm_page/alarm_page_time.dart';
 import 'package:fusionclock/src/home_page/alarm_config_widget.dart';
 import 'package:fusionclock/src/payments/gem_payment.dart';
@@ -33,10 +36,8 @@ class HomePageState extends State<HomePageView> with BackEnd {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    getAlarms().then((value) => {
+  void fetchAlarms() async {
+    await getAlarms().then((value) => {
           if (value != null)
             {
               setState(() {
@@ -44,11 +45,29 @@ class HomePageState extends State<HomePageView> with BackEnd {
                 widgets.add(
                     const Center(child: AlarmPageTime(textColor: Colors.pink)));
                 for (var alarm in value) {
-                  widgets.add(AlarmConfig(id: alarm.id));
+                  widgets.add(AlarmConfig(
+                    key: Key("${alarm.id}"),
+                    id: alarm.id,
+                    deleteAlarm: () async {
+                      if (await deleteAlarm(alarm.id)) {
+                        setState(() {
+                          widgets
+                              .removeWhere((e) => e.key == Key("${alarm.id}"));
+                          fetchAlarms();
+                        });
+                      }
+                    },
+                  ));
                 }
               })
             }
         });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAlarms();
   }
 
   @override
@@ -102,22 +121,33 @@ class HomePageState extends State<HomePageView> with BackEnd {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.purple.shade200),
                             onPressed: () {
-                              createAlarm(DateTime.now())
-                                .then((value) => {
-                                  getAlarms().then((value) => {
-                                    if (value != null)
-                                      {
-                                        setState(() {
-                                          widgets.clear();
-                                          widgets.add(
-                                              const Center(child: AlarmPageTime(textColor: Colors.pink)));
-                                          for (var alarm in value) {
-                                            widgets.add(AlarmConfig(id: alarm.id));
-                                          }
+                              createAlarm(DateTime.now()).then((value) => {
+                                    getAlarms().then((value) => {
+                                          if (value != null)
+                                            {
+                                              setState(() {
+                                                widgets.clear();
+                                                widgets.add(const Center(
+                                                    child: AlarmPageTime(
+                                                        textColor:
+                                                            Colors.pink)));
+                                                for (var alarm in value) {
+                                                  widgets.add(AlarmConfig(
+                                                      key: Key("${alarm.id}"),
+                                                      id: alarm.id,
+                                                      deleteAlarm: () async {
+                                                        if (await deleteAlarm(
+                                                            alarm.id)) {
+                                                          setState(() {
+                                                            fetchAlarms();
+                                                          });
+                                                        }
+                                                      }));
+                                                }
+                                              })
+                                            }
                                         })
-                                      }
-                                  })
-                                });
+                                  });
                             },
                             child: const SizedBox(
                                 width: 400,
