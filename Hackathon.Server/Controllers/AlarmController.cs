@@ -26,11 +26,12 @@ namespace Hackathon.Server.Controllers
         }
 
         // GET: api/Alarm
-        [HttpGet]
-        [Authorize]
-        public async Task<ActionResult<IEnumerable<AlarmModel>>> GetAlarms()
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<AlarmModel>>> GetAlarms(string authentication)
         {
-            ApplicationUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
+            if (user == null)
+                return Unauthorized();
             return await _context.Alarms
                 .Where(alarm => alarm.User == user)
                 .ToListAsync();
@@ -38,8 +39,7 @@ namespace Hackathon.Server.Controllers
 
         // GET: api/Alarm/5
         [HttpGet("{id}")]
-        [Authorize]
-        public async Task<ActionResult<AlarmModel>> GetAlarmModel(long id)
+        public async Task<ActionResult<AlarmModel>> GetAlarmModel(long id, string authentication)
         {
             var alarmModel = await _context.Alarms.FindAsync(id);
 
@@ -48,7 +48,9 @@ namespace Hackathon.Server.Controllers
                 return NotFound();
             }
 
-            ApplicationUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
+            if (user == null)
+                return Unauthorized();
             if (user == null)
                 return BadRequest();
             if (alarmModel.User != user)
@@ -60,12 +62,11 @@ namespace Hackathon.Server.Controllers
         // POST: api/Alarm
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize]
-        public async Task<ActionResult<AlarmModel>> PostAlarmModel(DateTime alarmTime)
+        public async Task<ActionResult<AlarmModel>> PostAlarmModel(DateTime alarmTime, string authentication)
         {
-            ApplicationUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
             if (user == null)
-                return BadRequest();
+                return Unauthorized();
             // Create a new alarm
             AlarmModel alarm = new AlarmModel()
             {
@@ -81,8 +82,7 @@ namespace Hackathon.Server.Controllers
 
         // DELETE: api/Alarm/5
         [HttpDelete("{id}")]
-        [Authorize]
-        public async Task<IActionResult> DeleteAlarmModel(long id)
+        public async Task<IActionResult> DeleteAlarmModel(long id, string authentication)
         {
             var alarmModel = await _context.Alarms.FindAsync(id);
             if (alarmModel == null)
@@ -90,9 +90,9 @@ namespace Hackathon.Server.Controllers
                 return NotFound();
             }
 
-            ApplicationUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
             if (user == null)
-                return BadRequest();
+                return Unauthorized();
             if (alarmModel.User != user)
                 return Unauthorized();
 
@@ -107,13 +107,12 @@ namespace Hackathon.Server.Controllers
             return _context.Alarms.Any(e => e.Id == id);
         }
 
-        [Authorize]
         [HttpPut("TriggerAlarm/{id}")]
-        public async Task<ActionResult<AlarmModel>> TriggerAlarm(long id)
+        public async Task<ActionResult<AlarmModel>> TriggerAlarm(long id, string authentication)
         {
-            ApplicationUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
             if (user == null)
-                return BadRequest();
+                return Unauthorized();
             var alarmModel = await _context.Alarms.FindAsync(id);
             if (alarmModel == null)
                 return BadRequest();
@@ -127,13 +126,12 @@ namespace Hackathon.Server.Controllers
             return alarmModel;
         }
 
-        [Authorize]
         [HttpPut("SetAlarmTime/{id}")]
-        public async Task<ActionResult<AlarmModel>> SetAlarmTime(long id, DateTime newTime)
+        public async Task<ActionResult<AlarmModel>> SetAlarmTime(long id, DateTime newTime, string authentication)
         {
-            ApplicationUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
             if (user == null)
-                return BadRequest();
+                return Unauthorized();
             var alarmModel = await _context.Alarms.FindAsync(id);
             if (alarmModel == null)
                 return BadRequest();
@@ -148,13 +146,12 @@ namespace Hackathon.Server.Controllers
             return alarmModel;
         }
 
-        [Authorize]
         [HttpGet("GetSharedAlarms/{id}")]
-        public async Task<ActionResult<int>> GetSharedAlarmCount(long id)
+        public async Task<ActionResult<int>> GetSharedAlarmCount(long id, string authentication)
         {
-            ApplicationUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
             if (user == null)
-                return BadRequest();
+                return Unauthorized();
             var alarmModel = await _context.Alarms.FindAsync(id);
             if (alarmModel == null)
                 return BadRequest();

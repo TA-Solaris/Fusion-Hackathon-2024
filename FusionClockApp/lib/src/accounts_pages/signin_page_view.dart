@@ -47,14 +47,14 @@ class RegisterPageState extends State<LoginPageView> with BackEnd {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Column(
-                children: [
-                  SizedBox(height: 60),
-                  Text(
-                    "Login",
-                    style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
-                  )
-                ],
+              SizedBox(height: 60),
+              Text(
+                "Login",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 60,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               DecoratedField(
                 icon: Icons.email,
@@ -68,23 +68,24 @@ class RegisterPageState extends State<LoginPageView> with BackEnd {
                 obscureText: true,
                 controller: passwordTextController,
               ),
-              Expanded(child: SizedBox()),
+              const Expanded(child: SizedBox()),
               Container(
                 padding: const EdgeInsets.only(top: 3, left: 3),
                 child: ElevatedButton(
                   onPressed: () => {
-                    submitButton()
-                      .then((value) => {
-                        if (!value)
-                        {
-                          // Error notification
-                          showFlashError(context, "Invalid username or password")
-                        }
-                        else
-                        {
-                          Navigator.pushNamed(context, HomePageView.routeName)
-                        }
-                      })
+                    submitButton().then((value) => {
+                          if (!value)
+                            {
+                              // Error notification
+                              showFlashError(
+                                  context, "Invalid username or password")
+                            }
+                          else
+                            {
+                              Navigator.pushNamed(
+                                  context, HomePageView.routeName)
+                            }
+                        })
                   },
                   style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),

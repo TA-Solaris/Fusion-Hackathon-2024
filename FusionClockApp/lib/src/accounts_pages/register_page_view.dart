@@ -39,19 +39,18 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 40),
-        height: MediaQuery.of(context).size.height - 50,
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Column(
-                children: [
-                  SizedBox(height: 60),
-                  Text(
-                    "Sign Up",
-                    style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
-                  )
-                ],
+              SizedBox(height: 60),
+              Text(
+                "Sign Up",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 60,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 20),
               DecoratedField(
@@ -73,24 +72,24 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
                 obscureText: true,
                 controller: password2TextController,
               ),
-              Expanded(child: SizedBox()),
+              const Expanded(child: SizedBox()),
               Container(
                 padding: const EdgeInsets.only(top: 3, left: 3),
                 child: ElevatedButton(
                   onPressed: () => {
-                    submitButton()
-                      .then((value) => {
-                        if (!value)
-                        {
-                          // Error notification
-                          showFlashError(context, "Registration failed")
-                        }
-                        else
-                        {
-                          Navigator.pushNamed(context, HomePageView.routeName)
-                        }
-                      })
-                    },
+                    submitButton().then((value) => {
+                          if (!value)
+                            {
+                              // Error notification
+                              showFlashError(context, "Registration failed")
+                            }
+                          else
+                            {
+                              Navigator.pushNamed(
+                                  context, HomePageView.routeName)
+                            }
+                        })
+                  },
                   style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -116,7 +115,9 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
                       shape: const StadiumBorder(),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       backgroundColor: themeColor.shade100),
-                  child: const Text('Login', style: TextStyle(fontSize: 20)),
+                  child: Text('Login',
+                      style:
+                          TextStyle(fontSize: 20, color: themeColor.shade900)),
                 ),
               ),
               const SizedBox(height: 20),
