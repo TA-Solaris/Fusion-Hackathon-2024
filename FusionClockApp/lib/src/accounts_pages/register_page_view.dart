@@ -42,19 +42,18 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 40),
-        height: MediaQuery.of(context).size.height - 50,
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Column(
-                children: [
-                  SizedBox(height: 60),
-                  Text(
-                    "Sign Up",
-                    style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
-                  )
-                ],
+              SizedBox(height: 60),
+              Text(
+                "Sign Up",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 60,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 20),
               DecoratedField(
