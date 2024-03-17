@@ -58,6 +58,7 @@ class AlarmPageTimeState extends State<SharedAlarms> with BackEnd {
   Widget build(BuildContext context) {
     return Text(
       "$peopleWaking other people are waking up too!",
+      textAlign: TextAlign.center,
       style: TextStyle(
           color: widget.textColor,
           fontSize: 28,
