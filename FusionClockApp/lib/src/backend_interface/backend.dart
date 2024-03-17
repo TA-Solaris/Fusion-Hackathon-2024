@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -100,8 +99,9 @@ mixin BackEnd {
     var auth = await prefs.getString("auth");
     if (auth == null) return false;
     var encodedAuth = Uri.encodeComponent(auth);
+    var userId = Uri.encodeComponent(id);
     http.Response response = await http.post(Uri.parse(
-        "$serverAddress/api/Friends/SendRequest/$id?authentication=$encodedAuth"));
+        "$serverAddress/api/Friends/SendRequest/$userId?authentication=$encodedAuth"));
     return response.statusCode == 200;
   }
 
