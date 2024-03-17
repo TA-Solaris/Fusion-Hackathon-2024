@@ -101,10 +101,22 @@ class HomePageState extends State<HomePageView> with BackEnd {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.purple.shade200),
                             onPressed: () {
-                              setState(() {
-                                widgets
-                                    .add(AlarmConfig(id: widgets.length + 1));
-                              });
+                              createAlarm(DateTime.now())
+                                .then((value) => {
+                                  getAlarms().then((value) => {
+                                    if (value != null)
+                                      {
+                                        setState(() {
+                                          widgets.clear();
+                                          widgets.add(
+                                              const Center(child: AlarmPageTime(textColor: Colors.pink)));
+                                          for (var alarm in value) {
+                                            widgets.add(AlarmConfig(id: alarm.id));
+                                          }
+                                        })
+                                      }
+                                  })
+                                });
                             },
                             child: const SizedBox(
                                 width: 400,
