@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:fusionclock/src/home_page/home_page_view.dart';
 import 'package:fusionclock/src/alarm_page/alarm_page_time.dart';
 
+import 'shared_alarms.dart';
+
 class AlarmPageView extends StatefulWidget {
-  const AlarmPageView({super.key});
+  final int alarmId;
+  const AlarmPageView({Key? key, required this.alarmId}) : super(key: key);
   static const routeName = '/alarm';
 
   @override
@@ -56,6 +59,7 @@ class _AlarmPageViewState extends State<AlarmPageView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const AlarmPageTime(),
+          SharedAlarms(alarmId: widget.alarmId),
           const SizedBox(height: 100),
           Dismissible(
             key: UniqueKey(),

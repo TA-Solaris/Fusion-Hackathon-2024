@@ -80,7 +80,8 @@ class MyApp extends StatelessWidget {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   case AlarmPageView.routeName:
-                    return const AlarmPageView();
+                    //TODO: Fix me
+                    return const AlarmPageView(alarmId: 1);
                   case RegisterPageView.routeName:
                     return const RegisterPageView();
                   case LoginPageView.routeName:
