@@ -52,14 +52,14 @@ class RegisterPageState extends State<LoginPageView> with BackEnd {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Column(
-                children: [
-                  SizedBox(height: 60),
-                  Text(
-                    "Login",
-                    style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
-                  )
-                ],
+              SizedBox(height: 60),
+              Text(
+                "Login",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 60,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               DecoratedField(
                 icon: Icons.email,
