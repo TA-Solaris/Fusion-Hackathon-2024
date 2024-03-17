@@ -27,6 +27,7 @@ class HomePageView extends StatefulWidget {
 
 class HomePageState extends State<HomePageView> with BackEnd {
   List<Widget> widgets = [];
+  int userGemCount = 0;
 
   void checkAuth(BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -48,8 +49,8 @@ class HomePageState extends State<HomePageView> with BackEnd {
                         textColor: Theme.of(context).primaryColor)));
                 widgets.add(const SizedBox(height: 90));
                 for (var alarm in value) {
+                  userGemCount = alarm.user.gems;
                   widgets.add(AlarmConfig(
-                      key: Key("${alarm.id}"),
                       id: alarm.id,
                       deleteAlarm: () {
                         deleteAlarm(alarm.id).then((value) => {fetchAlarms()});
@@ -80,7 +81,8 @@ class HomePageState extends State<HomePageView> with BackEnd {
     checkAuth(context); //TODO enable to force login
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.lerp(Theme.of(context).primaryColor, Theme.of(context).scaffoldBackgroundColor, 0.8),
+        backgroundColor: Color.lerp(Theme.of(context).primaryColor,
+            Theme.of(context).scaffoldBackgroundColor, 0.8),
         title: const Text('Fusion Clock'),
         actions: [
           IconButton(
@@ -111,7 +113,8 @@ class HomePageState extends State<HomePageView> with BackEnd {
         ],
       ),
       body: Container(
-        color: Color.lerp(Theme.of(context).primaryColor, Theme.of(context).scaffoldBackgroundColor, 0.94),
+        color: Color.lerp(Theme.of(context).primaryColor,
+            Theme.of(context).scaffoldBackgroundColor, 0.94),
         child: Overlay(
           initialEntries: [
             OverlayEntry(builder: (BuildContext context) {
@@ -146,10 +149,12 @@ class HomePageState extends State<HomePageView> with BackEnd {
               );
             }),
             OverlayEntry(builder: (BuildContext context) {
-              return const Positioned(
+              return Positioned(
                 top: 15,
                 right: 30,
-                child: GemPayment(),
+                child: GemPayment(
+                  userGemCount: userGemCount,
+                ),
               );
             }),
           ],
