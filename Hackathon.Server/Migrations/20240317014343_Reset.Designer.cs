@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Hackathon.Server.Data.Migrations
+namespace Hackathon.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240316172124_Friends")]
-    partial class Friends
+    [Migration("20240317014343_Reset")]
+    partial class Reset
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,9 @@ namespace Hackathon.Server.Data.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<byte>("DaysSet")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime>("LastTime")
                         .HasColumnType("datetime2");
@@ -133,6 +136,20 @@ namespace Hackathon.Server.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Hackathon.Server.Models.AuthModel", b =>
+                {
+                    b.Property<string>("AuthKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AuthKey");
+
+                    b.ToTable("AuthTokens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
