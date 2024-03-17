@@ -3,17 +3,22 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class AlarmPageTime extends StatefulWidget {
-  const AlarmPageTime({super.key});
-  
+  const AlarmPageTime({
+    super.key,
+    this.textColor = Colors.white,
+  });
+
+  final Color textColor;
+
   @override
   State<StatefulWidget> createState() => AlarmPageTimeState();
 }
 
 class AlarmPageTimeState extends State<AlarmPageTime> {
-
   String timeString = "";
+  late Timer timer;
 
-  getTimeString() {
+  void getTimeString() {
     final DateTime now = DateTime.now();
     final String formattedTime = formatTime(now);
 
@@ -28,22 +33,28 @@ class AlarmPageTimeState extends State<AlarmPageTime> {
 
   @override
   void initState() {
+    super.initState();
     getTimeString();
 
-    Timer.periodic(const Duration(seconds: 1), (Timer t) => getTimeString());
-    super.initState();
+    timer = Timer.periodic(
+        const Duration(seconds: 1), (Timer t) => getTimeString());
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      style: const TextStyle(
-        color: Colors.white,
-        fontSize: 80,
-        decoration: TextDecoration.none,
-        fontFamily: 'RobotoMono'
-      ),
-      timeString
+      timeString,
+      style: TextStyle(
+          color: widget.textColor,
+          fontSize: 80,
+          decoration: TextDecoration.none,
+          fontFamily: 'RobotoMono'),
     );
   }
 }

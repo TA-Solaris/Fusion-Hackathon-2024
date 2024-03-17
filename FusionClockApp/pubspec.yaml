@@ -10,11 +10,13 @@ environment:
   sdk: '>=3.3.1 <4.0.0'
 
 dependencies:
+  audioplayers: ^5.2.1
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
   http: ^1.2.1
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
@@ -29,5 +31,5 @@ flutter:
   generate: true
 
   assets:
-    # Add assets from the images directory to the application.
     - assets/images/
+    - assets/sounds/alarms/theelevatorbossanova.mp3

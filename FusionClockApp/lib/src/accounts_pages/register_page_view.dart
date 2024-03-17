@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fusionclock/src/accounts_pages/signin_page_view.dart';
 import 'package:fusionclock/src/backend_interface/backend.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../ErrorBar/error_bar.dart';
+
+import '../home_page/home_page_view.dart';
 import 'decorated_field.dart';
 
 class RegisterPageView extends StatefulWidget {
@@ -19,8 +23,15 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
   final passwordTextController = TextEditingController();
   final password2TextController = TextEditingController();
 
-  void submitButton() {
-    register(emailTextController.text, passwordTextController.text);
+  Future<String?> submitButton() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var result =
+        await register(emailTextController.text, passwordTextController.text);
+    if (result == null) {
+      return null;
+    }
+    await prefs.setString("auth", result);
+    return result;
   }
 
   @override
@@ -34,7 +45,6 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
         height: MediaQuery.of(context).size.height - 50,
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Column(
@@ -66,11 +76,24 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
                 obscureText: true,
                 controller: password2TextController,
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.3),
+              const Expanded(child: SizedBox()),
               Container(
                 padding: const EdgeInsets.only(top: 3, left: 3),
                 child: ElevatedButton(
-                  onPressed: submitButton,
+                  onPressed: () => {
+                    submitButton().then((value) => {
+                          if (value == null)
+                            {
+                              // Error notification
+                              showFlashError(context, "Registration failed")
+                            }
+                          else
+                            {
+                              Navigator.pushNamed(
+                                  context, HomePageView.routeName)
+                            }
+                        })
+                  },
                   style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -96,9 +119,12 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
                       shape: const StadiumBorder(),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       backgroundColor: themeColor.shade100),
-                  child: const Text('Login', style: TextStyle(fontSize: 20)),
+                  child: Text('Login',
+                      style:
+                          TextStyle(fontSize: 20, color: themeColor.shade900)),
                 ),
-              )
+              ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
