@@ -5,6 +5,7 @@ import 'package:fusionclock/src/home_page/alarm_config_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../friends/friends_page_view.dart';
+import '../models/alarm.dart';
 import '../settings/settings_view.dart';
 import '../alarm_page/alarm_page_view.dart';
 import '../backend_interface/backend.dart';
@@ -20,10 +21,25 @@ class HomePageView extends StatefulWidget {
 
 class HomePageState extends State<HomePageView> with BackEnd {
 
+  List<Widget> widgets = [];
+
   @override
   void initState() {
     super.initState();
-    getAlarms();
+    getAlarms()
+      .then((value) => {
+        if (value != null)
+        {
+          setState(() {
+            widgets.clear();
+            widgets.add(Center(child: AlarmPageTime(textColor: Colors.pink)));
+            for (var alarm in value)
+            {
+              widgets.add(AlarmConfig(id: alarm.id));
+            }
+          })
+        }
+      });
   }
 
   @override
@@ -60,17 +76,12 @@ class HomePageState extends State<HomePageView> with BackEnd {
           ),
         ],
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
-              children: [
-                Center(child: AlarmPageTime(textColor: Colors.pink)),
-                AlarmConfig(id: 1),
-                AlarmConfig(id: 2),
-                AlarmConfig(id: 3),
-              ],
+              children: widgets,
             ),
             Column(
               children: [

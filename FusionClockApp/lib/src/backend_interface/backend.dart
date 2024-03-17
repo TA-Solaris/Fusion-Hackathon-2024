@@ -83,4 +83,27 @@ mixin BackEnd {
     }
     return users;
   }
+
+  Future<bool> ringAlarm(int alarmId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var auth = await prefs.getString("auth");
+    if (auth == null)
+      return false;
+    var encodedAuth = Uri.encodeComponent(auth);
+    http.Response response = await http.put(
+        Uri.parse("$serverAddress/api/Alarm/TriggerAlarm/$alarmId?authentication=$encodedAuth"));
+    return true;
+  }
+
+  Future<bool> stopAlarm(int alarmId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var auth = await prefs.getString("auth");
+    if (auth == null)
+      return false;
+    var encodedAuth = Uri.encodeComponent(auth);
+    http.Response response = await http.put(
+        Uri.parse("$serverAddress/api/Alarm/StopAlarm/$alarmId?authentication=$encodedAuth"));
+    return true;
+  }
+
 }
