@@ -47,7 +47,7 @@ class _AlarmConfigState extends State<AlarmConfig> with BackEnd {
     }
     int numAlarms = prefs.getInt('num_alarms') ?? 0;
     await prefs.setInt(
-        'num_alarms', widget.id >= numAlarms ? widget.id : numAlarms);
+        'num_alarms', widget.id >= numAlarms ? widget.id + 1 : numAlarms);
     updateAlarmTime(widget.id, TimeOfDay(hour: hours, minute: mins));
     setState(() {
       alarmTime = TimeOfDay(hour: hours, minute: mins);
