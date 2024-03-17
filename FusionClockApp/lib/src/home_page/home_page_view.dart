@@ -5,6 +5,7 @@ import 'package:fusionclock/src/home_page/alarm_config_widget.dart';
 import 'package:fusionclock/src/payments/gem_payment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../accounts_pages/signin_page_view.dart';
 import '../friends/friends_page_view.dart';
 import '../models/alarm.dart';
 import '../settings/settings_view.dart';
@@ -21,30 +22,37 @@ class HomePageView extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePageView> with BackEnd {
-
   List<Widget> widgets = [];
+
+  void checkAuth(BuildContext context) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var auth = await prefs.getString("auth");
+    if ((auth == null) && context.mounted) {
+      Navigator.pushReplacementNamed(context, LoginPageView.routeName);
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    getAlarms()
-      .then((value) => {
-        if (value != null)
-        {
-          setState(() {
-            widgets.clear();
-            widgets.add(Center(child: AlarmPageTime(textColor: Colors.pink)));
-            for (var alarm in value)
+    getAlarms().then((value) => {
+          if (value != null)
             {
-              widgets.add(AlarmConfig(id: alarm.id));
+              setState(() {
+                widgets.clear();
+                widgets
+                    .add(Center(child: AlarmPageTime(textColor: Colors.pink)));
+                for (var alarm in value) {
+                  widgets.add(AlarmConfig(id: alarm.id));
+                }
+              })
             }
-          })
-        }
-      });
+        });
   }
 
   @override
   Widget build(BuildContext context) {
+    //checkAuth(context); //TODO enable to force login
     return Scaffold(
       appBar: AppBar(
         title: const Text('Fusion Clock'),
@@ -71,8 +79,7 @@ class HomePageState extends State<HomePageView> with BackEnd {
           IconButton(
             icon: const Icon(Icons.person),
             onPressed: () {
-              Navigator.restorablePushNamed(
-                  context, RegisterPageView.routeName);
+              Navigator.restorablePushNamed(context, LoginPageView.routeName);
             },
           ),
         ],
