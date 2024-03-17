@@ -24,10 +24,9 @@ namespace Hackathon.Server.Controllers
         }
 
         [HttpGet("Search/{username}")]
-        [Authorize]
-        public async Task<ActionResult<IEnumerable<FriendSearch>>> SearchUsers(string username)
+        public async Task<ActionResult<IEnumerable<FriendSearch>>> SearchUsers(string username, string authentication)
         {
-            ApplicationUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
             if (user == null)
                 return Unauthorized();
             return await _context.Users
@@ -38,10 +37,9 @@ namespace Hackathon.Server.Controllers
         }
 
         [HttpPost("SendRequest/{userId}")]
-        [Authorize]
-        public async Task<ActionResult> SendFriendRequest(string userId)
+        public async Task<ActionResult> SendFriendRequest(string userId, string authentication)
         {
-            ApplicationUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
             if (user == null)
                 return Unauthorized();
             ApplicationUser? friend = await _context.Users.FindAsync(userId);
@@ -65,10 +63,9 @@ namespace Hackathon.Server.Controllers
         }
 
         [HttpPost("GetRequests")]
-        [Authorize]
-        public async Task<ActionResult<IEnumerable<FriendRequest>>> GetFriendRequests()
+        public async Task<ActionResult<IEnumerable<FriendRequest>>> GetFriendRequests(string authentication)
         {
-            ApplicationUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
             if (user == null)
                 return Unauthorized();
             return Ok(user.FriendRequests
@@ -77,9 +74,9 @@ namespace Hackathon.Server.Controllers
 
         [HttpPost("AcceptRequest/{friendId}")]
         [Authorize]
-        public async Task<ActionResult> AcceptFriendRequest(string friendId)
+        public async Task<ActionResult> AcceptFriendRequest(string friendId, string authentication)
         {
-            ApplicationUser? user = await _userManager.GetUserAsync(User);
+            ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
             if (user == null)
                 return Unauthorized();
             ApplicationUser? friend = await _context.Users.FindAsync(friendId);

@@ -13,5 +13,7 @@ namespace Hackathon.Server.Data
 
         public DbSet<AlarmModel> Alarms { get; set; } = null!;
 
+        public DbSet<AuthModel> AuthTokens { get; set; } = null!;
+
     }
 }

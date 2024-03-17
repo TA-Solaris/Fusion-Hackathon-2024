@@ -21,14 +21,9 @@ class RegisterPageState extends State<LoginPageView> with BackEnd {
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
 
-  Future<String?> submitButton() async {
+  Future<bool> submitButton() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var result =
-        await login(emailTextController.text, passwordTextController.text);
-    if (result == null) {
-      return null;
-    }
-    await prefs.setString("auth", result);
+    var result = await login(emailTextController.text, passwordTextController.text);
     return result;
   }
 
@@ -80,7 +75,7 @@ class RegisterPageState extends State<LoginPageView> with BackEnd {
                 child: ElevatedButton(
                   onPressed: () => {
                     submitButton().then((value) => {
-                          if (value == null)
+                          if (!value)
                             {
                               // Error notification
                               showFlashError(
