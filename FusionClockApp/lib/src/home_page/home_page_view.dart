@@ -81,7 +81,7 @@ class HomePageState extends State<HomePageView> with BackEnd {
     checkAuth(context); //TODO enable to force login
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.lerp(Theme.of(context).primaryColor, Theme.of(context).scaffoldBackgroundColor, 0.9),
+        backgroundColor: Color.lerp(Theme.of(context).primaryColor, Theme.of(context).scaffoldBackgroundColor, 0.8),
         title: const Text('Fusion Clock'),
         actions: [
           IconButton(
@@ -112,6 +112,7 @@ class HomePageState extends State<HomePageView> with BackEnd {
         ],
       ),
       body: Container(
+        color: Color.lerp(Theme.of(context).primaryColor, Theme.of(context).scaffoldBackgroundColor, 0.94),
         child: Overlay(
           initialEntries: [
             OverlayEntry(builder: (BuildContext context) {

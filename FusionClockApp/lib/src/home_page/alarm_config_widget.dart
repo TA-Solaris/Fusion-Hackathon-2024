@@ -70,14 +70,16 @@ class _AlarmConfigState extends State<AlarmConfig> with BackEnd {
           style: ElevatedButton.styleFrom(
               shape: const CircleBorder(),
               backgroundColor:
-                  daysSelected[i] ? theme.shade900 : theme.shade100),
+                  daysSelected[i]
+                  ? Color.lerp(Theme.of(context).primaryColor, Theme.of(context).scaffoldBackgroundColor, 0.2)
+                  : Color.lerp(Theme.of(context).primaryColor, Theme.of(context).scaffoldBackgroundColor, 0.8)),
           child: Text(
             daysOfWeek[i],
             style: TextStyle(
                 color: daysSelected[i]
-                    ? Colors.purple.shade100
-                    : Colors.purple.shade800,
-                fontSize: 12,
+                    ? Theme.of(context).scaffoldBackgroundColor
+                    : Theme.of(context).primaryColor,
+                fontSize: 16,
                 decoration: TextDecoration.none,
                 fontFamily: 'RobotoMono'),
           ));
@@ -108,14 +110,18 @@ class _AlarmConfigState extends State<AlarmConfig> with BackEnd {
                   width: 110,
                 ),
               ElevatedButton(
-                  onPressed: alarmUpdated,
-                  child: Text(
-                    "Alarm at ${formatTime()}",
-                    style: const TextStyle(
-                        fontSize: 35,
-                        decoration: TextDecoration.none,
-                        fontFamily: 'RobotoMono'),
-                  )),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.lerp(Theme.of(context).primaryColor, Theme.of(context).scaffoldBackgroundColor, 0.1),
+                  foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+                ),
+                onPressed: alarmUpdated,
+                child: Text(
+                  "Alarm at ${formatTime()}",
+                  style: const TextStyle(
+                    fontSize: 35,
+                    decoration: TextDecoration.none,
+                    fontFamily: 'RobotoMono'),
+                )),
               if (widget.deleteAlarm != null)
                 SizedBox(
                   width: 30,
