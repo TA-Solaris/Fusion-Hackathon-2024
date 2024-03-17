@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fusionclock/src/accounts_pages/decorated_field.dart';
+import 'package:fusionclock/src/friends/friend_widget.dart';
 
 class FriendsPageView extends StatefulWidget {
-  const FriendsPageView({super.key});
+  const FriendsPageView({
+    super.key,
+  });
 
   static const routeName = '/friends';
 
@@ -43,7 +45,14 @@ class _FriendsPageState extends State<FriendsPageView> {
               ))
         ],
       ),
+      Divider()
     ];
+    for (int i = 0; i < 4; i++) {
+      widgets.add(const FriendTile(
+        email: "email@email.com",
+        friendRequest: true,
+      ));
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Friends'),
