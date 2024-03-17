@@ -61,35 +61,36 @@ class HomePageState extends State<HomePageView> with BackEnd {
         ],
       ),
       body: const SingleChildScrollView(
-        child:Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            children: [
-              Center(child: AlarmPageTime(textColor: Colors.pink)),
-              AlarmConfig(id: 1),
-              AlarmConfig(id: 2),
-              AlarmConfig(id: 3),
-            ],
-          ),
-          Column(
-            children: [
-              Text(
-                "🔥",
-                style: const TextStyle(
-                  fontSize: 140,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                Center(child: AlarmPageTime(textColor: Colors.pink)),
+                AlarmConfig(id: 1),
+                AlarmConfig(id: 2),
+                AlarmConfig(id: 3),
+              ],
+            ),
+            Column(
+              children: [
+                Text(
+                  "🔥",
+                  style: const TextStyle(
+                    fontSize: 140,
+                  )
+                ),
+                Text(
+                  "Streak: 7 days",
+                  style: const TextStyle(
+                    fontSize: 42,
+                  )
                 )
-              ),
-              Text(
-                "Streak: 7 days",
-                style: const TextStyle(
-                  fontSize: 42,
-                )
-              )
-            ],
-          ),
-        ],
-      ),),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
