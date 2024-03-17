@@ -208,4 +208,15 @@ mixin BackEnd {
         "$serverAddress/api/Alarm/SendEmoji/$emoji?authentication=$encodedAuth"));
     return response.statusCode == 200;
   }
+
+  Future<bool> sabotage(String targetId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var auth = await prefs.getString("auth");
+    if (auth == null) return false;
+    var encodedAuth = Uri.encodeComponent(auth);
+    var encodedId = Uri.encodeComponent(targetId);
+    http.Response response = await http.post(Uri.parse(
+        '$serverAddress/api/Friends/Sabotage/$encodedId?authenticaton=$encodedAuth'));
+    return response.statusCode == 200;
+  }
 }
