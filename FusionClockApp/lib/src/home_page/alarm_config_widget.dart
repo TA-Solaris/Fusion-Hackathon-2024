@@ -66,7 +66,6 @@ class _AlarmConfigState extends State<AlarmConfig> {
           },
           style: ElevatedButton.styleFrom(
               shape: const CircleBorder(),
-              padding: const EdgeInsets.all(20),
               backgroundColor:
                   daysSelected[i] ? theme.shade900 : theme.shade100),
           child: Text(
@@ -81,7 +80,7 @@ class _AlarmConfigState extends State<AlarmConfig> {
           ));
     } else {
       return const SizedBox(
-        width: 20,
+        width: 10,
       );
     }
   }
@@ -103,7 +102,7 @@ class _AlarmConfigState extends State<AlarmConfig> {
               child: Text(
                 "Alarm at ${formatTime()}",
                 style: const TextStyle(
-                    fontSize: 45,
+                    fontSize: 35,
                     decoration: TextDecoration.none,
                     fontFamily: 'RobotoMono'),
               )),

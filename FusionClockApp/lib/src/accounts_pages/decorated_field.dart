@@ -21,13 +21,14 @@ class DecoratedField extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       decoration: InputDecoration(
-          hintText: text,
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(18),
-              borderSide: BorderSide.none),
-          fillColor: themeColor.withOpacity(0.1),
-          filled: true,
-          prefixIcon: Icon(icon)),
+        hintText: text,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(18),
+          borderSide: BorderSide.none
+        ),
+        fillColor: themeColor.withOpacity(0.1),
+        filled: true,
+        prefixIcon: Icon(icon)),
     );
   }
 }
