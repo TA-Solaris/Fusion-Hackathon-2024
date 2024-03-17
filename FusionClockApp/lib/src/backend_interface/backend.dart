@@ -106,4 +106,15 @@ mixin BackEnd {
     return true;
   }
 
+  Future<bool> createAlarm(DateTime alarmTime) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var auth = await prefs.getString("auth");
+    if (auth == null)
+      return false;
+    var encodedAuth = Uri.encodeComponent(auth);
+    http.Response response = await http.post(
+        Uri.parse("$serverAddress/api/Alarm?authentication=$encodedAuth"));
+    return response.statusCode == 200;
+  }
+
 }
