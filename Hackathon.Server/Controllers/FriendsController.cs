@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Hackathon.Server.Controllers
 {
@@ -31,7 +32,7 @@ namespace Hackathon.Server.Controllers
                 return Unauthorized();
             return await _context.Users
                 .Where(friend => friend.UserName != null && friend.UserName.Contains(username))
-                .Select(friend => new FriendSearch(friend.Id, friend.UserName!, user.Friends.Contains(friend), friend.FriendRequests.Contains(user)))
+                .Select(friend => new FriendSearch(friend.Id, friend.UserName!, user.FriendIds.Contains(friend.Id), friend.FriendRequestIds.Contains(user.Id)))
                 .Take(50)
                 .ToListAsync();
         }
@@ -42,22 +43,25 @@ namespace Hackathon.Server.Controllers
             ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
             if (user == null)
                 return Unauthorized();
-            ApplicationUser? friend = await _context.Users.FindAsync(userId);
+            ApplicationUser? friend = _context.Users
+                .Where(x => x.Id == userId)
+                .First();
             if (friend == null)
                 return NotFound();
-            if (user.Friends.Contains(friend))
+            if (user.FriendIds.Contains(friend.Id) || friend.FriendIds.Contains(user.Id))
                 return BadRequest("You are already friends with this user.");
-            if (friend.FriendRequests.Contains(user))
+            if (friend.FriendRequestIds.Contains(user.Id))
                 return BadRequest("You have already sent a friend request to this user.");
-            if (user.FriendRequests.Contains(friend))
+            if (user.FriendRequestIds.Contains(friend.Id))
             {
-                user.FriendRequests.Remove(friend);
-                user.Friends.Add(friend);
-                friend.Friends.Add(user);
+                user.FriendRequestIds.Remove(friend.Id);
+                friend.FriendRequestIds.Remove(user.Id);
+                user.FriendIds.Add(friend.Id);
+                friend.FriendIds.Add(user.Id);
                 await _context.SaveChangesAsync();
                 return Ok("Friend request accepted");
             }
-            friend.FriendRequests.Add(user);
+            friend.FriendRequestIds.Add(user.Id);
             await _context.SaveChangesAsync();
             return Ok("Friend request sent");
         }
@@ -68,8 +72,20 @@ namespace Hackathon.Server.Controllers
             ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
             if (user == null)
                 return Unauthorized();
-            return Ok(user.FriendRequests
-                .Select(friend => new FriendRequest(friend.Id, friend.UserName!)));
+            return Ok(user.FriendRequestIds
+                .Select(async friend => new FriendRequest(friend, (await _context.Users.FindAsync(friend)).UserName!)));
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<FriendRequest>>> GetFriends(string authentication)
+        {
+            ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
+            if (user == null)
+                return Unauthorized();
+            var result = await _context.Users
+                .Where(x => x.FriendIds.Any(friend => friend == user.Id))
+                .ToListAsync();
+            return Ok(result);
         }
 
         [HttpPost("AcceptRequest/{friendId}")]
@@ -79,14 +95,38 @@ namespace Hackathon.Server.Controllers
             ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
             if (user == null)
                 return Unauthorized();
-            ApplicationUser? friend = await _context.Users.FindAsync(friendId);
+            ApplicationUser? friend = _context.Users
+                .Where(x => x.Id == friendId)
+                .First();
             if (friend == null)
                 return Unauthorized();
-            if (!user.FriendRequests.Contains(friend))
+            if (!user.FriendRequestIds.Contains(friend.Id))
                 return NotFound();
-            user.FriendRequests.Remove(friend);
-            user.Friends.Add(friend);
-            friend.Friends.Add(user);
+            user.FriendRequestIds.Remove(friend.Id);
+            user.FriendIds.Add(friend.Id);
+            friend.FriendIds.Add(user.Id);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPost("Sabotage/{targetId}")]
+        [Authorize]
+        public async Task<ActionResult> Sabotage(string targetId, string authentication)
+        {
+            ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
+            if (user == null)
+                return Unauthorized();
+            if (user.Gems < 36)
+                return NotFound();
+            user.Gems -= 36;
+            ApplicationUser? friend = await _context.Users.FindAsync(targetId);
+            if (friend == null)
+                return NotFound();
+            var alarms = await _context.Alarms
+                .Where(alarm => alarm.User.Id == friend.Id)
+                .ToListAsync();
+            var alarm = alarms[Random.Shared.Next(alarms.Count)];
+            alarm.Time = alarm.Time += TimeSpan.FromMinutes(Random.Shared.Next(20) - 10);
             await _context.SaveChangesAsync();
             return Ok();
         }
