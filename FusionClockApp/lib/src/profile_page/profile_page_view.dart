@@ -42,46 +42,65 @@ class ProfilePageState extends State<ProfilePageView> with BackEnd {
     });
     // Get friends
     getFriends().then((value) => {
-      if (value != null)
-      {
-        setState(() {
-          for (var friend in value)
-          {
-            // wow friends lets go this is pog
-            friendStuff.add(Container(
-              color: Theme.of(context).cardColor,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(4, 24, 8, 24),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: const CircleBorder(),
-                            fixedSize: const Size.fromRadius(40),
-                            padding: const EdgeInsets.only(left: 8, right: 8)),
-                        onPressed: () {},
-                        child: const Text(
-                          "",
+          if (value != null)
+            {
+              setState(() {
+                for (var friend in value) {
+                  // wow friends lets go this is pog
+                  friendStuff.add(Container(
+                    color: Theme.of(context).cardColor,
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(4, 24, 8, 24),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color.lerp(
+                                      Theme.of(context).primaryColor,
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                      0.2),
+                                  shape: const CircleBorder(),
+                                  fixedSize: const Size.fromRadius(40),
+                                  padding:
+                                      const EdgeInsets.only(left: 8, right: 8)),
+                              onPressed: () {},
+                              child: const Text(
+                                "",
+                              )),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                            child: Text(
+                          friend.username,
+                          textAlign: TextAlign.justify,
+                          style: const TextStyle(
+                            fontSize: 20,
+                          ),
                         )),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                      child: Text(
-                    friend.username,
-                    textAlign: TextAlign.justify,
-                    style: const TextStyle(
-                      fontSize: 20,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            height: 80,
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  sabotage(friend.id);
+                                },
+                                child: Text(
+                                  "Sabotage",
+                                  style: TextStyle(fontSize: 14),
+                                )),
+                          ),
+                        ),
+                      ],
                     ),
-                  )),
-                ],
-              ),
-            ));
-          }
-        })
-      }
-    });
+                  ));
+                }
+              })
+            }
+        });
   }
 
   @override
@@ -110,9 +129,7 @@ class ProfilePageState extends State<ProfilePageView> with BackEnd {
               SizedBox(height: 100),
               Text(
                 "Friends",
-                style: TextStyle(
-                  fontSize: 32
-                ),
+                style: TextStyle(fontSize: 32),
               ),
               Divider(),
               ...friendStuff
