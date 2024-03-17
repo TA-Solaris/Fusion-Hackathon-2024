@@ -1,5 +1,6 @@
 using Hackathon.Server.Data;
 using Hackathon.Server.Hubs;
+using Hackathon.Server.Middleware;
 using Hackathon.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -31,9 +32,12 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         policy =>
         {
-            policy.AllowAnyOrigin();
+            policy.AllowCredentials();
+            policy.WithExposedHeaders("set-cookie");
+            policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
             policy.AllowAnyHeader();
             policy.AllowAnyMethod();
+            policy.WithHeaders("Set-Cookie");
         });
 });
 
@@ -52,6 +56,9 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+
+app.UseHeaderToBodyMiddleware();
 
 app.UseCors();
 
