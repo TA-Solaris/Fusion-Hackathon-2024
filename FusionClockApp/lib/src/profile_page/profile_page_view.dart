@@ -50,6 +50,7 @@ class ProfilePageState extends State<ProfilePageView> with BackEnd {
             // wow friends lets go this is pog
             friendStuff.add(Container(
               color: Theme.of(context).cardColor,
+              child: Text(friend.username),
             ));
           }
         })
