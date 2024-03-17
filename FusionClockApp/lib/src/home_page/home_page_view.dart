@@ -11,6 +11,7 @@ import '../models/alarm.dart';
 import '../settings/settings_view.dart';
 import '../alarm_page/alarm_page_view.dart';
 import '../backend_interface/backend.dart';
+import '../profile_page/profile_page_view.dart';
 
 class HomePageView extends StatefulWidget {
   const HomePageView({super.key});
@@ -79,7 +80,7 @@ class HomePageState extends State<HomePageView> with BackEnd {
           IconButton(
             icon: const Icon(Icons.person),
             onPressed: () {
-              Navigator.restorablePushNamed(context, LoginPageView.routeName);
+              Navigator.restorablePushNamed(context, ProfilePageView.routeName);
             },
           ),
         ],
@@ -122,14 +123,6 @@ class HomePageState extends State<HomePageView> with BackEnd {
                                 width: 400,
                                 height: 50,
                                 child: Icon(Icons.add))),
-                      const Text("🔥",
-                          style: TextStyle(
-                            fontSize: 140,
-                          )),
-                      const Text("Streak: 7 days",
-                          style: TextStyle(
-                            fontSize: 42,
-                          ))
                     ],
                   ),
                 ],

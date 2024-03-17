@@ -10,6 +10,7 @@ import 'package:fusionclock/src/home_page/home_page_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 import 'alarm_page/alarm_page_view.dart';
+import 'profile_page/profile_page_view.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -88,6 +89,8 @@ class MyApp extends StatelessWidget {
                     return const AlarmPageView(alarmId: 1);
                   case FriendsPageView.routeName:
                     return const FriendsPageView();
+                  case ProfilePageView.routeName:
+                    return const ProfilePageView();
                   default:
                     return const LoginPageView();
                 }
