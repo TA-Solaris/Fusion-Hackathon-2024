@@ -4,6 +4,7 @@ import 'package:fusionclock/src/alarm_page/alarm_page_time.dart';
 import 'package:fusionclock/src/home_page/alarm_config_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../friends/friends_page_view.dart';
 import '../settings/settings_view.dart';
 import '../alarm_page/alarm_page_view.dart';
 import '../backend_interface/backend.dart';
@@ -25,6 +26,12 @@ class HomePageState extends State<HomePageView> with BackEnd {
       appBar: AppBar(
         title: const Text('Fusion Clock'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.restorablePushNamed(context, FriendsPageView.routeName);
+            },
+          ),
           IconButton(
             // TEMP BUTTON
             icon: const Icon(Icons.alarm),
