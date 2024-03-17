@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fusionclock/src/accounts_pages/register_page_view.dart';
 import 'package:fusionclock/src/alarm_page/alarm_page_time.dart';
 import 'package:fusionclock/src/home_page/alarm_config_widget.dart';
+import 'package:fusionclock/src/payments/gem_payment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../friends/friends_page_view.dart';
@@ -76,31 +77,44 @@ class HomePageState extends State<HomePageView> with BackEnd {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              children: widgets,
-            ),
-            Column(
-              children: [
-                Text(
-                  "🔥",
-                  style: const TextStyle(
-                    fontSize: 140,
-                  )
-                ),
-                Text(
-                  "Streak: 7 days",
-                  style: const TextStyle(
-                    fontSize: 42,
-                  )
-                )
-              ],
-            ),
-          ],
-        ),
+      body: Overlay(
+        initialEntries: [
+          OverlayEntry(builder: (BuildContext context) {
+            return SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: widgets,
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        "🔥",
+                        style: const TextStyle(
+                          fontSize: 140,
+                        )
+                      ),
+                      Text(
+                        "Streak: 7 days",
+                        style: const TextStyle(
+                          fontSize: 42,
+                        )
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }),
+          OverlayEntry(builder: (BuildContext context) {
+            return Positioned(
+              top: 15,
+              right: 30,
+              child: GemPayment(),
+            );
+          }),
+        ],
       ),
     );
   }
