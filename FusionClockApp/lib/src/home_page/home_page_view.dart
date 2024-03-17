@@ -39,28 +39,32 @@ class HomePageState extends State<HomePageView> with BackEnd {
   void fetchAlarms() async {
     await getAlarms().then((value) => {
           if (value != null)
-            {
-              setState(() {
-                widgets.clear();
-                widgets.add(
-                    const Center(child: AlarmPageTime(textColor: Colors.pink)));
-                for (var alarm in value) {
-                  widgets.add(AlarmConfig(
-                    key: Key("${alarm.id}"),
-                    id: alarm.id,
-                    deleteAlarm: () async {
-                      if (await deleteAlarm(alarm.id)) {
-                        setState(() {
-                          widgets
-                              .removeWhere((e) => e.key == Key("${alarm.id}"));
-                          fetchAlarms();
-                        });
-                      }
-                    },
-                  ));
-                }
-              })
-            }
+          {
+            setState(() {
+              widgets.clear();
+              widgets.add(
+              const Center(child: AlarmPageTime(textColor: Colors.pink)));
+              for (var alarm in value) {
+                widgets.add(AlarmConfig(
+                  key: Key("${alarm.id}"),
+                  id: alarm.id,
+                  deleteAlarm: () {
+                    deleteAlarm(alarm.id)
+                      .then((value) => {
+                        fetchAlarms()
+                      });
+                    }
+                ));
+              }
+            })
+          }
+          else
+          {
+            setState(() {
+              widgets.clear();
+              widgets.add(const Center(child: AlarmPageTime(textColor: Colors.pink)));
+            })
+          }
         });
   }
 
@@ -123,30 +127,8 @@ class HomePageState extends State<HomePageView> with BackEnd {
                             onPressed: () {
                               createAlarm(DateTime.now()).then((value) => {
                                     getAlarms().then((value) => {
-                                          if (value != null)
-                                            {
-                                              setState(() {
-                                                widgets.clear();
-                                                widgets.add(const Center(
-                                                    child: AlarmPageTime(
-                                                        textColor:
-                                                            Colors.pink)));
-                                                for (var alarm in value) {
-                                                  widgets.add(AlarmConfig(
-                                                      key: Key("${alarm.id}"),
-                                                      id: alarm.id,
-                                                      deleteAlarm: () async {
-                                                        if (await deleteAlarm(
-                                                            alarm.id)) {
-                                                          setState(() {
-                                                            fetchAlarms();
-                                                          });
-                                                        }
-                                                      }));
-                                                }
-                                              })
-                                            }
-                                        })
+                                      fetchAlarms()
+                                    })
                                   });
                             },
                             child: const SizedBox(

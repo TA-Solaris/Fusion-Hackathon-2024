@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -8,6 +9,7 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:intl/intl.dart';
 
+import '../ErrorBar/error_bar.dart';
 import '../models/alarm.dart';
 import '../models/sharedAlarm.dart';
 import '../models/userFriend.dart';
@@ -48,7 +50,10 @@ mixin BackEnd {
   Future<List<Alarm>?> getAlarms() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var auth = await prefs.getString("auth");
-    if (auth == null) return null;
+    if (auth == null)
+    {
+      return null;
+    }
     var encodedAuth = Uri.encodeComponent(auth);
     http.Response response = await http.get(Uri.parse(
         "$serverAddress/api/Alarm/GetAll?authentication=$encodedAuth"));
