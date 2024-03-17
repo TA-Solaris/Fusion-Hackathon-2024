@@ -23,6 +23,20 @@ namespace Hackathon.Server.Controllers
         {
             _context = context;
             _userManager = userManager;
+
+            _ = Task.Run(async () => {
+                while (true)
+                {
+                    lock (RingingAlarms)
+                    {
+                        foreach (var alarm in RingingAlarms.Where(alarm => alarm.LastTime < DateTime.Now - TimeSpan.FromMinutes(5)).ToList())
+                        {
+                            RingingAlarms.Remove(alarm);
+                        }
+                    }
+                    await Task.Delay(60000);
+                }
+            });
         }
 
         // GET: api/Alarm
@@ -107,6 +121,8 @@ namespace Hackathon.Server.Controllers
             return _context.Alarms.Any(e => e.Id == id);
         }
 
+        private static HashSet<AlarmModel> RingingAlarms { get; } = new HashSet<AlarmModel>();
+
         [HttpPut("TriggerAlarm/{id}")]
         public async Task<ActionResult<AlarmModel>> TriggerAlarm(long id, string authentication)
         {
@@ -120,10 +136,34 @@ namespace Hackathon.Server.Controllers
                 return Unauthorized();
             if (!alarmModel.IsAlarmReady())
                 return BadRequest();
+            lock (RingingAlarms)
+            {
+                if (!RingingAlarms.Contains(alarmModel))
+                    RingingAlarms.Add(alarmModel);
+            }
             alarmModel.TimesAccepted++;
             alarmModel.LastTime = DateTime.Now;
             await _context.SaveChangesAsync();
             return alarmModel;
+        }
+
+        [HttpPut("StopAlarm/{id}")]
+        public async Task<ActionResult> StopAlarm(long id, string authentication)
+        {
+            ApplicationUser? user = await AuthenticationController.VerifyLogin(_context, authentication);
+            if (user == null)
+                return Unauthorized();
+            var alarmModel = await _context.Alarms.FindAsync(id);
+            if (alarmModel == null)
+                return BadRequest();
+            if (alarmModel.User != user)
+                return Unauthorized();
+            lock (RingingAlarms)
+            {
+                if (RingingAlarms.Contains(alarmModel))
+                    RingingAlarms.Remove(alarmModel);
+            }
+            return Ok();
         }
 
         [HttpPut("SetAlarmTime/{id}")]
@@ -157,9 +197,10 @@ namespace Hackathon.Server.Controllers
                 return BadRequest();
             if (alarmModel.User != user)
                 return Unauthorized();
-            return await _context.Alarms
-                .Where(alarm => alarm.Time == alarmModel.Time)
-                .CountAsync();
+            lock (RingingAlarms)
+            {
+                return RingingAlarms.Count;
+            }
         }
 
     }
