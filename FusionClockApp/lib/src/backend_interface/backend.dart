@@ -7,6 +7,7 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 
 import '../models/alarm.dart';
+import '../models/userFriend.dart';
 
 mixin BackEnd {
   String serverAddress = 'https://xfrktmh0-7240.uks1.devtunnels.ms';
@@ -57,6 +58,21 @@ mixin BackEnd {
       alarmObjects.add(new Alarm(alarm['id'], alarm['timesAccepted'], DateTime.parse(alarm['time']), alarm['daysSet']));
     }
     return alarmObjects;
+  }
+
+  Future<int?> getSharedAlarmCount(int alarmId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var auth = await prefs.getString("auth");
+    if (auth == null)
+      return null;
+    var encodedAuth = Uri.encodeComponent(auth);
+    http.Response response = await http.get(
+        Uri.parse("$serverAddress/api/Alarm/GetSharedAlarms/$alarmId?authentication=$encodedAuth"));
+    return int.parse(response.body);
+  }
+
+  Future<List<UserFriend>?> searchUsers(String searchTerm) async {
+    return null;
   }
 
 }
