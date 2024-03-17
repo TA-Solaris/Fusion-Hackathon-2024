@@ -1,4 +1,5 @@
 import 'dart:js_util';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:fusionclock/src/accounts_pages/register_page_view.dart';
@@ -42,8 +43,9 @@ class HomePageState extends State<HomePageView> with BackEnd {
           {
             setState(() {
               widgets.clear();
-              widgets.add(
-              const Center(child: AlarmPageTime(textColor: Colors.pink)));
+              widgets.add(const SizedBox(height: 120));
+              widgets.add(Center(child: AlarmPageTime(textColor: Theme.of(context).primaryColor)));
+              widgets.add(const SizedBox(height: 90));
               for (var alarm in value) {
                 widgets.add(AlarmConfig(
                   key: Key("${alarm.id}"),
@@ -62,7 +64,7 @@ class HomePageState extends State<HomePageView> with BackEnd {
           {
             setState(() {
               widgets.clear();
-              widgets.add(const Center(child: AlarmPageTime(textColor: Colors.pink)));
+              widgets.add(Center(child: AlarmPageTime(textColor: Theme.of(context).primaryColor)));
             })
           }
         });
@@ -79,6 +81,7 @@ class HomePageState extends State<HomePageView> with BackEnd {
     checkAuth(context); //TODO enable to force login
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.lerp(Theme.of(context).primaryColor, Theme.of(context).scaffoldBackgroundColor, 0.9),
         title: const Text('Fusion Clock'),
         actions: [
           IconButton(
@@ -108,47 +111,49 @@ class HomePageState extends State<HomePageView> with BackEnd {
           ),
         ],
       ),
-      body: Overlay(
-        initialEntries: [
-          OverlayEntry(builder: (BuildContext context) {
-            return SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: widgets,
-                  ),
-                  Column(
-                    children: [
-                      if (widgets.length < 5)
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.purple.shade200),
-                            onPressed: () {
-                              createAlarm(DateTime.now()).then((value) => {
-                                    getAlarms().then((value) => {
-                                      fetchAlarms()
-                                    })
-                                  });
-                            },
-                            child: const SizedBox(
-                                width: 400,
-                                height: 50,
-                                child: Icon(Icons.add))),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          }),
-          OverlayEntry(builder: (BuildContext context) {
-            return const Positioned(
-              top: 15,
-              right: 30,
-              child: GemPayment(),
-            );
-          }),
-        ],
+      body: Container(
+        child: Overlay(
+          initialEntries: [
+            OverlayEntry(builder: (BuildContext context) {
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: widgets,
+                    ),
+                    Column(
+                      children: [
+                        if (widgets.length < 5)
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Theme.of(context).secondaryHeaderColor),
+                              onPressed: () {
+                                createAlarm(DateTime.now()).then((value) => {
+                                      getAlarms().then((value) => {
+                                        fetchAlarms()
+                                      })
+                                    });
+                              },
+                              child: const SizedBox(
+                                  width: 400,
+                                  height: 50,
+                                  child: Icon(Icons.add))),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            }),
+            OverlayEntry(builder: (BuildContext context) {
+              return const Positioned(
+                top: 15,
+                right: 30,
+                child: GemPayment(),
+              );
+            }),
+          ],
+        ),
       ),
     );
   }
