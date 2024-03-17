@@ -9,6 +9,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:intl/intl.dart';
 
 import '../models/alarm.dart';
+import '../models/sharedAlarm.dart';
 import '../models/userFriend.dart';
 
 mixin BackEnd {
@@ -60,14 +61,17 @@ mixin BackEnd {
     return alarmObjects;
   }
 
-  Future<int?> getSharedAlarmCount(int alarmId) async {
+  Future<SharedAlarm?> getSharedAlarmCount(int alarmId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var auth = await prefs.getString("auth");
     if (auth == null) return null;
     var encodedAuth = Uri.encodeComponent(auth);
     http.Response response = await http.get(Uri.parse(
         "$serverAddress/api/Alarm/GetSharedAlarms/$alarmId?authentication=$encodedAuth"));
-    return int.parse(response.body);
+    var json = jsonDecode(response.body);
+    var names = json["names"] as List<dynamic>;
+    List<dynamic> emojis = json["emojis"] as List<dynamic>;
+    return SharedAlarm(names.length, emojis);
   }
 
   Future<List<UserFriend>?> searchUsers(String searchTerm) async {
@@ -137,6 +141,17 @@ mixin BackEnd {
 
   String formatToASPNET(TimeOfDay timeOfDay) {
     return '${timeOfDay.hour.toString().padLeft(2, '0')}:${timeOfDay.minute.toString().padLeft(2, '0')}:00';
+  }
+
+  Future<bool> sendEmoji(int emoji) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var auth = await prefs.getString("auth");
+    if (auth == null)
+      return false;
+    var encodedAuth = Uri.encodeComponent(auth);
+    http.Response response = await http.post(
+        Uri.parse("$serverAddress/api/Alarm/SendEmoji/$emoji?authentication=$encodedAuth"));
+    return response.statusCode == 200;
   }
 
 }
