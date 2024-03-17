@@ -47,13 +47,15 @@ class HomePageState extends State<HomePageView> {
           )
         ],
       ),
-      body: const Column(
-        children: [
-          Center(child: AlarmPageTime(textColor: Colors.pink)),
-          AlarmConfig(id: 1),
-          AlarmConfig(id: 2),
-          AlarmConfig(id: 3),
-        ],
+      body: const SingleChildScrollView(
+        child: Column(
+          children: [
+            Center(child: AlarmPageTime(textColor: Colors.pink)),
+            AlarmConfig(id: 1),
+            AlarmConfig(id: 2),
+            AlarmConfig(id: 3),
+          ],
+        ),
       ),
     );
   }
