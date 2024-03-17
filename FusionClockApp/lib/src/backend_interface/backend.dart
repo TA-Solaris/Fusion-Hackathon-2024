@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fusionclock/src/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,8 +59,13 @@ mixin BackEnd {
     final alarms = jsonDecode(response.body) as List<dynamic>;
     List<Alarm> alarmObjects = [];
     for (var alarm in alarms) {
-      alarmObjects.add(new Alarm(alarm['id'], alarm['timesAccepted'],
-          DateTime.parse(alarm['time']), alarm['daysSet']));
+      final user = alarm['user'];
+      alarmObjects.add(new Alarm(
+          alarm['id'],
+          alarm['timesAccepted'],
+          DateTime.parse(alarm['time']),
+          alarm['daysSet'],
+          User(user['gems'], user['userName'])));
     }
     return alarmObjects;
   }
@@ -181,8 +187,13 @@ mixin BackEnd {
         "$serverAddress/api/Alarm/SetAlarmTime/$alarmId?newTime=$encodedTime&authentication=$encodedAuth"));
     if (response.statusCode != 200) return null;
     final alarm = jsonDecode(response.body);
-    return new Alarm(alarm['id'], alarm['timesAccepted'],
-        DateTime.parse(alarm['time']), alarm['daysSet']);
+    final user = alarm['user'];
+    return new Alarm(
+        alarm['id'],
+        alarm['timesAccepted'],
+        DateTime.parse(alarm['time']),
+        alarm['daysSet'],
+        User(user['gems'], user['userName']));
   }
 
   String formatToASPNET(TimeOfDay timeOfDay) {

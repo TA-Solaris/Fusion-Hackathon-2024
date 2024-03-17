@@ -3,14 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fusionclock/src/payments/purchase_gems.dart';
 
-
 class GemPayment extends StatefulWidget {
-  const GemPayment({
-    super.key,
-    this.textColor = Colors.white,
-  });
+  const GemPayment(
+      {super.key, this.textColor = Colors.white, required this.userGemCount});
 
   final Color textColor;
+  final int userGemCount;
 
   @override
   State<StatefulWidget> createState() => GemPaymentState();
@@ -28,7 +26,7 @@ class GemPaymentState extends State<GemPayment> {
       timeString = formattedTime;
     });
   }
-  
+
   String formatTime(DateTime dateTime) {
     return "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}:${dateTime.second.toString().padLeft(2, '0')}";
   }
@@ -59,7 +57,7 @@ class GemPaymentState extends State<GemPayment> {
         );
       },
       child: Container(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         width: 140,
         decoration: BoxDecoration(
           color: Colors.purple,
@@ -68,22 +66,22 @@ class GemPaymentState extends State<GemPayment> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(
+            const Icon(
               Icons.diamond, // Use the diamond-shaped icon
               color: Colors.white, // Customize the color as needed
               size: 30.0,
             ),
-            SizedBox(width: 5),
+            Expanded(child: SizedBox(width: 1)),
             Text(
-              '100',
-              style: TextStyle(
+              '${widget.userGemCount}',
+              style: const TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-            SizedBox(width: 12),
-            Icon(
+            Expanded(child: SizedBox(width: 1)),
+            const Icon(
               Icons.shopping_cart, // Use the shopping cart icon
               color: Colors.white, // Customize the color as needed
               size: 30.0,
