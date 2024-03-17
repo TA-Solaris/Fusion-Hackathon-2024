@@ -63,6 +63,10 @@ class _FriendsPageState extends State<FriendsPageView> with BackEnd {
       widgets.add(FriendTile(
         userFriend: users[i],
         friendRequest: true,
+        onAccept: () {
+          sendFriendRequest(users[i].id);
+          acceptFriendRequest(users[i].id);
+        },
       ));
     }
     return Scaffold(
