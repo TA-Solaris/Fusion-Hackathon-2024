@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fusionclock/src/accounts_pages/register_page_view.dart';
 import 'package:fusionclock/src/accounts_pages/signin_page_view.dart';
 import 'package:fusionclock/src/alarm_page/alarm_logic.dart';
+import 'package:fusionclock/src/friends/friends_page_view.dart';
 import 'package:fusionclock/src/home_page/home_page_view.dart';
 
 import 'settings/settings_controller.dart';
@@ -79,11 +80,14 @@ class MyApp extends StatelessWidget {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   case AlarmPageView.routeName:
-                    return const AlarmPageView();
+                    //TODO: Fix me
+                    return const AlarmPageView(alarmId: 1);
                   case RegisterPageView.routeName:
                     return const RegisterPageView();
                   case LoginPageView.routeName:
                     return const LoginPageView();
+                  case FriendsPageView.routeName:
+                    return const FriendsPageView();
                   default:
                     return const HomePageView();
                 }
