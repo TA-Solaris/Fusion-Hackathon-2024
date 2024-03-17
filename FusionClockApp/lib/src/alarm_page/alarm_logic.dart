@@ -8,12 +8,9 @@ class AlarmLogic {
   SharedPreferences? prefs;
   BuildContext? context;
   Timer? timer;
-  List<TimeOfDay> alarmTime =
-      List.filled(5, TimeOfDay.fromDateTime(DateTime.now()));
+  List<TimeOfDay>? alarmTime;
   String? currentRoute;
-  List<List<bool>> daysSelected = List.filled(
-      5, List.filled(5, true) + List.filled(2, false),
-      growable: true);
+  List<List<bool>>? daysSelected;
   int numAlarms = 0;
 
   void setContext(BuildContext context) {
@@ -26,10 +23,10 @@ class AlarmLogic {
     //Alarm
     DateTime currentTime = DateTime.now();
     for (int n = 0; n < numAlarms; n++) {
-      if ((currentTime.minute == alarmTime[n].minute) &&
-          (currentTime.hour == alarmTime[n].hour) &&
+      if ((currentTime.minute == alarmTime?[n].minute) &&
+          (currentTime.hour == alarmTime?[n].hour) &&
           (currentTime.second < 2) &&
-          (daysSelected[n][currentTime.weekday - 1]) &&
+          (daysSelected?[n][currentTime.weekday - 1] ?? false) &&
           (currentRoute != AlarmPageView.routeName)) {
         try {
           Navigator.pushReplacementNamed(context!, AlarmPageView.routeName);
@@ -43,13 +40,15 @@ class AlarmLogic {
     //Load alarm time
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     numAlarms = prefs.getInt('num_alarms') ?? 1;
+    alarmTime = List.filled(numAlarms, TimeOfDay(hour: 7, minute: 30));
+    daysSelected = List.filled(
+        numAlarms, List<bool>.filled(5, true) + List<bool>.filled(2, false));
     for (int n = 0; n < numAlarms; n++) {
       int hours = prefs.getInt('alarm${n}_hour') ?? 7;
       int mins = prefs.getInt('alarm${n}_min') ?? 30;
-      alarmTime[n] = TimeOfDay(hour: hours, minute: mins);
+      alarmTime?[n] = TimeOfDay(hour: hours, minute: mins);
       for (int i = 0; i < 7; i++) {
-        daysSelected[n][i] =
-            prefs.getBool('alarm${n}_day$i') ?? daysSelected[n][i];
+        daysSelected?[n][i] = prefs.getBool('alarm${n}_day$i') ?? false;
       }
     }
   }

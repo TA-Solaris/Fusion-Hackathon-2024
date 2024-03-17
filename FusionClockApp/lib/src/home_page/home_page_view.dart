@@ -1,35 +1,88 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:fusionclock/src/accounts_pages/register_page_view.dart';
+import 'package:fusionclock/src/alarm_page/alarm_logic.dart';
 import 'package:fusionclock/src/alarm_page/alarm_page_time.dart';
 import 'package:fusionclock/src/home_page/alarm_config_widget.dart';
+import 'package:fusionclock/src/payments/gem_payment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../accounts_pages/signin_page_view.dart';
 import '../friends/friends_page_view.dart';
+import '../models/alarm.dart';
 import '../settings/settings_view.dart';
 import '../alarm_page/alarm_page_view.dart';
 import '../backend_interface/backend.dart';
+import '../profile_page/profile_page_view.dart';
 
 class HomePageView extends StatefulWidget {
   const HomePageView({super.key});
 
-  static const routeName = '/';
+  static const routeName = '/home';
 
   @override
   State<HomePageView> createState() => HomePageState();
 }
 
 class HomePageState extends State<HomePageView> with BackEnd {
+  List<Widget> widgets = [];
+  int userGemCount = 0;
+
+  void checkAuth(BuildContext context) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var auth = await prefs.getString("auth");
+    if ((auth == null) && context.mounted) {
+      Navigator.pushReplacementNamed(context, LoginPageView.routeName);
+    }
+  }
+
+  void fetchAlarms() async {
+    await getAlarms().then((value) => {
+          if (value != null)
+            {
+              setState(() {
+                widgets.clear();
+                widgets.add(const SizedBox(height: 120));
+                widgets.add(Center(
+                    child: AlarmPageTime(
+                        textColor: Theme.of(context).primaryColor)));
+                widgets.add(const SizedBox(height: 90));
+                for (var alarm in value) {
+                  userGemCount = alarm.user.gems;
+                  widgets.add(AlarmConfig(
+                      id: alarm.id,
+                      deleteAlarm: () {
+                        deleteAlarm(alarm.id).then((value) => {fetchAlarms()});
+                      }));
+                }
+              })
+            }
+          else
+            {
+              setState(() {
+                widgets.clear();
+                widgets.add(Center(
+                    child: AlarmPageTime(
+                        textColor: Theme.of(context).primaryColor)));
+              })
+            }
+        });
+  }
 
   @override
   void initState() {
     super.initState();
-    getAlarms();
+    fetchAlarms();
   }
 
   @override
   Widget build(BuildContext context) {
+    checkAuth(context); //TODO enable to force login
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.lerp(Theme.of(context).primaryColor,
+            Theme.of(context).scaffoldBackgroundColor, 0.8),
         title: const Text('Fusion Clock'),
         actions: [
           IconButton(
@@ -54,40 +107,56 @@ class HomePageState extends State<HomePageView> with BackEnd {
           IconButton(
             icon: const Icon(Icons.person),
             onPressed: () {
-              Navigator.restorablePushNamed(
-                  context, RegisterPageView.routeName);
+              Navigator.restorablePushNamed(context, ProfilePageView.routeName);
             },
           ),
         ],
       ),
-      body: const SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              children: [
-                Center(child: AlarmPageTime(textColor: Colors.pink)),
-                AlarmConfig(id: 1),
-                AlarmConfig(id: 2),
-                AlarmConfig(id: 3),
-              ],
-            ),
-            Column(
-              children: [
-                Text(
-                  "🔥",
-                  style: const TextStyle(
-                    fontSize: 140,
-                  )
+      body: Container(
+        color: Color.lerp(Theme.of(context).primaryColor,
+            Theme.of(context).scaffoldBackgroundColor, 0.94),
+        child: Overlay(
+          initialEntries: [
+            OverlayEntry(builder: (BuildContext context) {
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: widgets,
+                    ),
+                    Column(
+                      children: [
+                        if (widgets.length < 5)
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Theme.of(context).secondaryHeaderColor),
+                              onPressed: () {
+                                createAlarm(DateTime.now()).then((value) => {
+                                      getAlarms()
+                                          .then((value) => {fetchAlarms()})
+                                    });
+                              },
+                              child: const SizedBox(
+                                  width: 400,
+                                  height: 50,
+                                  child: Icon(Icons.add))),
+                      ],
+                    ),
+                  ],
                 ),
-                Text(
-                  "Streak: 7 days",
-                  style: const TextStyle(
-                    fontSize: 42,
-                  )
-                )
-              ],
-            ),
+              );
+            }),
+            OverlayEntry(builder: (BuildContext context) {
+              return Positioned(
+                top: 15,
+                right: 30,
+                child: GemPayment(
+                  userGemCount: userGemCount,
+                ),
+              );
+            }),
           ],
         ),
       ),

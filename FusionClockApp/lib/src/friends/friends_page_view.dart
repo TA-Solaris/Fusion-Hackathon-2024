@@ -62,12 +62,18 @@ class _FriendsPageState extends State<FriendsPageView> with BackEnd {
     for (int i = 0; i < users.length; i++) {
       widgets.add(FriendTile(
         userFriend: users[i],
-        friendRequest: true,
+        friendRequest: !users[i].isFriend,
+        onAccept: () {
+          sendFriendRequest(users[i].id);
+          setState(() {
+            users[i].isFriend = true;
+          });
+        },
       ));
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Friends'),
+        title: const Text('Search Users'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),

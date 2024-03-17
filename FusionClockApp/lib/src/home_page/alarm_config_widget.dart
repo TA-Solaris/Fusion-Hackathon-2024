@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fusionclock/src/backend_interface/backend.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AlarmConfig extends StatefulWidget {
   final int id;
+  final Function? deleteAlarm;
 
-  const AlarmConfig({super.key, required this.id});
+  const AlarmConfig({super.key, required this.id, this.deleteAlarm});
 
   @override
   State<AlarmConfig> createState() => _AlarmConfigState();
 }
 
-class _AlarmConfigState extends State<AlarmConfig> {
+class _AlarmConfigState extends State<AlarmConfig> with BackEnd {
   TimeOfDay alarmTime = TimeOfDay.fromDateTime(DateTime.now());
   List<bool> daysSelected = List.filled(5, true) + List.filled(2, false);
   final MaterialColor theme = Colors.pink;
@@ -45,7 +47,8 @@ class _AlarmConfigState extends State<AlarmConfig> {
     }
     int numAlarms = prefs.getInt('num_alarms') ?? 0;
     await prefs.setInt(
-        'num_alarms', widget.id >= numAlarms ? widget.id : numAlarms);
+        'num_alarms', widget.id >= numAlarms ? widget.id + 1 : numAlarms);
+    updateAlarmTime(widget.id, TimeOfDay(hour: hours, minute: mins));
     setState(() {
       alarmTime = TimeOfDay(hour: hours, minute: mins);
     });
@@ -65,16 +68,21 @@ class _AlarmConfigState extends State<AlarmConfig> {
             await prefs.setBool('alarm${widget.id}_day$i', daysSelected[i]);
           },
           style: ElevatedButton.styleFrom(
+              fixedSize: Size.fromRadius(
+                  1 /*MediaQuery.of(context).size.width * 0.001*/),
               shape: const CircleBorder(),
-              backgroundColor:
-                  daysSelected[i] ? theme.shade900 : theme.shade100),
+              backgroundColor: daysSelected[i]
+                  ? Color.lerp(Theme.of(context).primaryColor,
+                      Theme.of(context).scaffoldBackgroundColor, 0.2)
+                  : Color.lerp(Theme.of(context).primaryColor,
+                      Theme.of(context).scaffoldBackgroundColor, 0.8)),
           child: Text(
             daysOfWeek[i],
             style: TextStyle(
                 color: daysSelected[i]
-                    ? Colors.purple.shade100
-                    : Colors.purple.shade800,
-                fontSize: 12,
+                    ? Theme.of(context).scaffoldBackgroundColor
+                    : Theme.of(context).primaryColor,
+                fontSize: 16,
                 decoration: TextDecoration.none,
                 fontFamily: 'RobotoMono'),
           ));
@@ -97,15 +105,56 @@ class _AlarmConfigState extends State<AlarmConfig> {
       padding: const EdgeInsets.only(top: 20, bottom: 20),
       child: Column(
         children: [
-          ElevatedButton(
-              onPressed: alarmUpdated,
-              child: Text(
-                "Alarm at ${formatTime()}",
-                style: const TextStyle(
-                    fontSize: 35,
-                    decoration: TextDecoration.none,
-                    fontFamily: 'RobotoMono'),
-              )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (widget.deleteAlarm != null)
+                Expanded(
+                  flex: 12,
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.lerp(Theme.of(context).primaryColor,
+                        Theme.of(context).scaffoldBackgroundColor, 0.1),
+                    foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  ),
+                  onPressed: alarmUpdated,
+                  child: Text(
+                    "Alarm at ${formatTime()}",
+                    style: const TextStyle(
+                        fontSize: 30,
+                        decoration: TextDecoration.none,
+                        fontFamily: 'RobotoMono'),
+                  )),
+              if (widget.deleteAlarm != null)
+                Expanded(
+                  flex: 1,
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                ),
+              if (widget.deleteAlarm != null)
+                ElevatedButton(
+                    onPressed: () {
+                      widget.deleteAlarm!();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Icon(Icons.close)),
+              if (widget.deleteAlarm != null)
+                Expanded(
+                  flex: 9,
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                ),
+            ],
+          ),
           const SizedBox(
             height: 20,
           ),

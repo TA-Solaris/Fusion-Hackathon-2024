@@ -20,6 +20,8 @@ dependencies:
   http: ^1.2.1
   shared_preferences: ^2.2.2
   rename_app: ^1.3.2
+  intl: ^0.18.1
+  signalr_netcore: ^0.1.7+2-nullsafety.3
 
 dev_dependencies:
   flutter_test:

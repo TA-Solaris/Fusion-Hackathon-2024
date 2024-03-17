@@ -10,6 +10,7 @@ import 'package:fusionclock/src/home_page/home_page_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 import 'alarm_page/alarm_page_view.dart';
+import 'profile_page/profile_page_view.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -62,8 +63,12 @@ class MyApp extends StatelessWidget {
           // Define a light and dark color theme. Then, read the user's
           // preferred ThemeMode (light, dark, or system default) from the
           // SettingsController to display the correct theme.
-          theme: ThemeData(),
-          darkTheme: ThemeData.dark(),
+          theme: ThemeData(
+            primaryColor: Color.fromARGB(255, 97, 60, 199),
+          ),
+          darkTheme: ThemeData.dark().copyWith(
+            primaryColor: Color.fromARGB(255, 229, 180, 251),
+          ),
           themeMode: settingsController.themeMode,
 
           // Define a function to handle named routes in order to support
@@ -75,21 +80,23 @@ class MyApp extends StatelessWidget {
                 alarmLogic.setContext(context);
                 alarmLogic.currentRoute = routeSettings.name;
                 switch (routeSettings.name) {
+                  case LoginPageView.routeName:
+                    return const LoginPageView();
+                  case RegisterPageView.routeName:
+                    return const RegisterPageView();
                   case HomePageView.routeName:
                     return const HomePageView();
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   case AlarmPageView.routeName:
                     //TODO: Fix me
-                    return const AlarmPageView(alarmId: 1);
-                  case RegisterPageView.routeName:
-                    return const RegisterPageView();
-                  case LoginPageView.routeName:
-                    return const LoginPageView();
+                    return AlarmPageView(alarmId: 1);
                   case FriendsPageView.routeName:
                     return const FriendsPageView();
+                  case ProfilePageView.routeName:
+                    return const ProfilePageView();
                   default:
-                    return const HomePageView();
+                    return const LoginPageView();
                 }
               },
             );

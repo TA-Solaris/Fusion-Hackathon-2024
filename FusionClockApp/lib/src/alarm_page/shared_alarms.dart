@@ -10,9 +10,12 @@ class SharedAlarms extends StatefulWidget {
     super.key,
     this.textColor = Colors.white,
     required this.alarmId,
+    required this.peopleCount,
   });
 
   final Color textColor;
+
+  final int peopleCount;
 
   final int alarmId;
 
@@ -22,42 +25,17 @@ class SharedAlarms extends StatefulWidget {
 
 class AlarmPageTimeState extends State<SharedAlarms> with BackEnd {
   int peopleWaking = 0;
-  late Timer timer;
-
-  void getTimeString() {
-    final DateTime now = DateTime.now();
-
-    getSharedAlarmCount(widget.alarmId)
-      .then((result) => {
-        setState(() {
-          peopleWaking = result ?? 0;
-        })
-      });
-  }
 
   String formatTime(DateTime dateTime) {
     return "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}:${dateTime.second.toString().padLeft(2, '0')}";
   }
 
   @override
-  void initState() {
-    super.initState();
-    getTimeString();
-
-    timer = Timer.periodic(
-        const Duration(milliseconds: 937), (Timer t) => getTimeString());
-  }
-
-  @override
-  void dispose() {
-    timer.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    var pplCount = widget.peopleCount;
     return Text(
-      "$peopleWaking other people are waking up too!",
+      "$pplCount other people are waking up too!",
+      textAlign: TextAlign.center,
       style: TextStyle(
           color: widget.textColor,
           fontSize: 28,
