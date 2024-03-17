@@ -86,6 +86,26 @@ mixin BackEnd {
     return users;
   }
 
+  Future<bool> sendFriendRequest(String id) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var auth = await prefs.getString("auth");
+    if (auth == null) return false;
+    var encodedAuth = Uri.encodeComponent(auth);
+    http.Response response = await http.post(Uri.parse(
+        "$serverAddress/api/Friends/SendRequest/$id?authentication=$encodedAuth"));
+    return response.statusCode == 200;
+  }
+
+  Future<bool>? acceptFriendRequest(String id) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var auth = await prefs.getString("auth");
+    if (auth == null) return false;
+    var encodedAuth = Uri.encodeComponent(auth);
+    http.Response response = await http.post(Uri.parse(
+        "$serverAddress/api/Friends/AcceptRequest/$id?authentication=$encodedAuth"));
+    return response.statusCode == 200;
+  }
+
   Future<bool> ringAlarm(int alarmId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var auth = await prefs.getString("auth");
