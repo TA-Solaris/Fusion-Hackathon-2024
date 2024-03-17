@@ -73,7 +73,7 @@ class _FriendsPageState extends State<FriendsPageView> with BackEnd {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Friends'),
+        title: const Text('Search Users'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),

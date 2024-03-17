@@ -94,6 +94,22 @@ mixin BackEnd {
     return users;
   }
 
+  Future<List<UserFriend>?> getFriends() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var auth = await prefs.getString("auth");
+    if (auth == null) return null;
+    var encodedAuth = Uri.encodeComponent(auth);
+    http.Response response = await http.get(Uri.parse(
+        "$serverAddress/api/Friends/GetAll?authentication=$encodedAuth"));
+    final possibleFriends = jsonDecode(response.body) as List<dynamic>;
+    List<UserFriend> users = [];
+    for (var pfriend in possibleFriends) {
+      users.add(UserFriend(pfriend["userId"], pfriend["userName"],
+          pfriend["isFriend"] == "true"));
+    }
+    return users;
+  }
+
   Future<bool> sendFriendRequest(String id) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var auth = await prefs.getString("auth");

@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../accounts_pages/signin_page_view.dart';
 import '../backend_interface/backend.dart';
+import '../models/userFriend.dart';
 
 class ProfilePageView extends StatefulWidget {
   const ProfilePageView({super.key});
@@ -16,6 +17,7 @@ class ProfilePageView extends StatefulWidget {
 class ProfilePageState extends State<ProfilePageView> with BackEnd {
   List<Widget> widgets = [];
   int maxStreak = 0;
+  List<Widget> friendStuff = [];
 
   void checkAuth(BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -36,6 +38,21 @@ class ProfilePageState extends State<ProfilePageView> with BackEnd {
             maxStreak = alarm.streak;
           }
         }
+      }
+    });
+    // Get friends
+    getFriends().then((value) => {
+      if (value != null)
+      {
+        setState(() {
+          for (var friend in value)
+          {
+            // wow friends lets go this is pog
+            friendStuff.add(Container(
+              color: Theme.of(context).cardColor,
+            ));
+          }
+        })
       }
     });
   }
@@ -63,6 +80,15 @@ class ProfilePageState extends State<ProfilePageView> with BackEnd {
                   fontSize: 42,
                 ),
               ),
+              SizedBox(height: 100),
+              Text(
+                "Friends",
+                style: TextStyle(
+                  fontSize: 32
+                ),
+              ),
+              Divider(),
+              ...friendStuff
             ],
           ),
         ),
