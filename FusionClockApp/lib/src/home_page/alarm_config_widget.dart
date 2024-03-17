@@ -4,8 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AlarmConfig extends StatefulWidget {
   final int id;
+  final Function? deleteAlarm;
 
-  const AlarmConfig({super.key, required this.id});
+  const AlarmConfig({super.key, required this.id, this.deleteAlarm});
 
   @override
   State<AlarmConfig> createState() => _AlarmConfigState();
@@ -97,15 +98,38 @@ class _AlarmConfigState extends State<AlarmConfig> {
       padding: const EdgeInsets.only(top: 20, bottom: 20),
       child: Column(
         children: [
-          ElevatedButton(
-              onPressed: alarmUpdated,
-              child: Text(
-                "Alarm at ${formatTime()}",
-                style: const TextStyle(
-                    fontSize: 35,
-                    decoration: TextDecoration.none,
-                    fontFamily: 'RobotoMono'),
-              )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (widget.deleteAlarm != null)
+                SizedBox(
+                  width: 110,
+                ),
+              ElevatedButton(
+                  onPressed: alarmUpdated,
+                  child: Text(
+                    "Alarm at ${formatTime()}",
+                    style: const TextStyle(
+                        fontSize: 35,
+                        decoration: TextDecoration.none,
+                        fontFamily: 'RobotoMono'),
+                  )),
+              if (widget.deleteAlarm != null)
+                SizedBox(
+                  width: 30,
+                ),
+              if (widget.deleteAlarm != null)
+                ElevatedButton(
+                    onPressed: () {
+                      widget.deleteAlarm!();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Icon(Icons.close))
+            ],
+          ),
           const SizedBox(
             height: 20,
           ),
