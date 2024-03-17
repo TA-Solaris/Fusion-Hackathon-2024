@@ -38,66 +38,69 @@ class _PurchaseViewState extends State<PurchaseView> {
   }
 
   @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('Purchase View'),
-    ),
-    body: Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: FractionalOffset.topLeft,
-          end: FractionalOffset.bottomRight,
-          colors: [
-            Color.fromARGB(255, 56, 9, 60),
-            Color.fromARGB(255, 121, 24, 139),
-            Colors.pink,
-            Color.fromARGB(255, 219, 186, 127),
-          ],
-          stops: [
-            0.0,
-            0.2,
-            0.8,
-            1.0,
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Purchase View'),
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: FractionalOffset.topLeft,
+            end: FractionalOffset.bottomRight,
+            colors: [
+              Color.fromARGB(255, 56, 9, 60),
+              Color.fromARGB(255, 121, 24, 139),
+              Colors.pink,
+              Color.fromARGB(255, 219, 186, 127),
+            ],
+            stops: [
+              0.0,
+              0.2,
+              0.8,
+              1.0,
+            ],
+          ),
+        ),
+        child: Stack(
+          children: [
+            AnimatedContainer(
+              duration: Duration(seconds: 5),
+              color: Colors.transparent,
+            ),
+            ..._fallingGems,
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  PurchaseItem(
+                    gemCount: 60,
+                    price: '\$3.49',
+                    discountPercentage: 0,
+                    imagePath:
+                        'assets/gems.png', // Replace 'assets/gems.png' with your image path
+                  ),
+                  PurchaseItem(
+                    gemCount: 200,
+                    price: '\$6.49',
+                    discountPercentage: 20,
+                    imagePath:
+                        'assets/gems.png', // Replace 'assets/gems.png' with your image path
+                  ),
+                  PurchaseItem(
+                    gemCount: 800,
+                    price: '\$13.99',
+                    discountPercentage: 40,
+                    imagePath:
+                        'assets/gems.png', // Replace 'assets/gems.png' with your image path
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
-      child: Stack(
-        children: [
-          AnimatedContainer(
-            duration: Duration(seconds: 5),
-            color: Colors.transparent,
-          ),
-          ..._fallingGems,
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                PurchaseItem(
-                  gemCount: 60,
-                  price: '\$3.49',
-                  discountPercentage: 0,
-                  imagePath: 'assets/gems.png', // Replace 'assets/gems.png' with your image path
-                ),
-                PurchaseItem(
-                  gemCount: 200,
-                  price: '\$6.49',
-                  discountPercentage: 20,
-                  imagePath: 'assets/gems.png', // Replace 'assets/gems.png' with your image path
-                ),
-                PurchaseItem(
-                  gemCount: 800,
-                  price: '\$13.99',
-                  discountPercentage: 40,
-                  imagePath: 'assets/gems.png', // Replace 'assets/gems.png' with your image path
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
+    );
   }
 }
 
@@ -171,6 +174,32 @@ class PurchaseItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> diamondStack = [];
+
+    for (int i = 0; i < gemCount ~/ 5; i++) {
+      diamondStack.add(Positioned(
+        left: Random().nextDouble() * 150,
+        top: 120 - Random().nextDouble() * Random().nextDouble() * 120,
+        child: Transform.rotate(
+          angle: 2 * pi * 225 / 360,
+          child: Icon(
+            Icons.diamond,
+            color: Colors.purple.shade400,
+          ),
+        ),
+      ));
+      diamondStack.add(Positioned(
+        left: Random().nextDouble() * 150,
+        top: 120 - Random().nextDouble() * Random().nextDouble() * 120,
+        child: Transform.rotate(
+          angle: 2 * pi * 315 / 360,
+          child: Icon(
+            Icons.diamond,
+            color: Colors.purple,
+          ),
+        ),
+      ));
+    }
     return Container(
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -183,10 +212,52 @@ class PurchaseItem extends StatelessWidget {
           Stack(
             alignment: Alignment.topRight,
             children: [
-              Image.asset(
+              /*Image.asset(
                 imagePath,
                 height: 150,
                 width: 150,
+              ),*/
+              SizedBox(
+                height: 150,
+                width: 150,
+                child: Stack(
+                  children:
+                      diamondStack /*[
+                    Positioned(
+                      left: 50,
+                      top: 50,
+                      child: Transform.rotate(
+                        angle: 45 * 3.14159 / 180,
+                        child: Icon(Icons.favorite, size: 50),
+                      ),
+                    ),
+                    Positioned(
+                      right: 50,
+                      top: 50,
+                      child: Transform.rotate(
+                        angle: -45 * 3.14159 / 180,
+                        child: Icon(Icons.star, size: 50),
+                      ),
+                    ),
+                    Positioned(
+                      left: 50,
+                      bottom: 50,
+                      child: Transform.rotate(
+                        angle: -45 * 3.14159 / 180,
+                        child: Icon(Icons.home, size: 50),
+                      ),
+                    ),
+                    Positioned(
+                      right: 50,
+                      bottom: 50,
+                      child: Transform.rotate(
+                        angle: 45 * 3.14159 / 180,
+                        child: Icon(Icons.music_note, size: 50),
+                      ),
+                    ),
+                  ]*/
+                  ,
+                ),
               ),
               Container(
                 transform: Matrix4.rotationZ(0.8),
