@@ -1,4 +1,3 @@
-import 'dart:js_util';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -40,33 +39,33 @@ class HomePageState extends State<HomePageView> with BackEnd {
   void fetchAlarms() async {
     await getAlarms().then((value) => {
           if (value != null)
-          {
-            setState(() {
-              widgets.clear();
-              widgets.add(const SizedBox(height: 120));
-              widgets.add(Center(child: AlarmPageTime(textColor: Theme.of(context).primaryColor)));
-              widgets.add(const SizedBox(height: 90));
-              for (var alarm in value) {
-                widgets.add(AlarmConfig(
-                  key: Key("${alarm.id}"),
-                  id: alarm.id,
-                  deleteAlarm: () {
-                    deleteAlarm(alarm.id)
-                      .then((value) => {
-                        fetchAlarms()
-                      });
-                    }
-                ));
-              }
-            })
-          }
+            {
+              setState(() {
+                widgets.clear();
+                widgets.add(const SizedBox(height: 120));
+                widgets.add(Center(
+                    child: AlarmPageTime(
+                        textColor: Theme.of(context).primaryColor)));
+                widgets.add(const SizedBox(height: 90));
+                for (var alarm in value) {
+                  widgets.add(AlarmConfig(
+                      key: Key("${alarm.id}"),
+                      id: alarm.id,
+                      deleteAlarm: () {
+                        deleteAlarm(alarm.id).then((value) => {fetchAlarms()});
+                      }));
+                }
+              })
+            }
           else
-          {
-            setState(() {
-              widgets.clear();
-              widgets.add(Center(child: AlarmPageTime(textColor: Theme.of(context).primaryColor)));
-            })
-          }
+            {
+              setState(() {
+                widgets.clear();
+                widgets.add(Center(
+                    child: AlarmPageTime(
+                        textColor: Theme.of(context).primaryColor)));
+              })
+            }
         });
   }
 
@@ -81,7 +80,8 @@ class HomePageState extends State<HomePageView> with BackEnd {
     checkAuth(context); //TODO enable to force login
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.lerp(Theme.of(context).primaryColor, Theme.of(context).scaffoldBackgroundColor, 0.9),
+        backgroundColor: Color.lerp(Theme.of(context).primaryColor,
+            Theme.of(context).scaffoldBackgroundColor, 0.9),
         title: const Text('Fusion Clock'),
         actions: [
           IconButton(
@@ -127,12 +127,12 @@ class HomePageState extends State<HomePageView> with BackEnd {
                         if (widgets.length < 5)
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Theme.of(context).secondaryHeaderColor),
+                                  backgroundColor:
+                                      Theme.of(context).secondaryHeaderColor),
                               onPressed: () {
                                 createAlarm(DateTime.now()).then((value) => {
-                                      getAlarms().then((value) => {
-                                        fetchAlarms()
-                                      })
+                                      getAlarms()
+                                          .then((value) => {fetchAlarms()})
                                     });
                               },
                               child: const SizedBox(
