@@ -119,7 +119,9 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
                       shape: const StadiumBorder(),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       backgroundColor: themeColor.shade100),
-                  child: const Text('Login', style: TextStyle(fontSize: 20)),
+                  child: Text('Login',
+                      style:
+                          TextStyle(fontSize: 20, color: themeColor.shade900)),
                 ),
               ),
               const SizedBox(height: 20),
