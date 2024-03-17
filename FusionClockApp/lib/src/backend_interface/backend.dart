@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:intl/intl.dart';
 
 import '../models/alarm.dart';
 import '../models/userFriend.dart';
@@ -115,6 +117,26 @@ mixin BackEnd {
     http.Response response = await http.post(
         Uri.parse("$serverAddress/api/Alarm?authentication=$encodedAuth"));
     return response.statusCode == 200;
+  }
+
+  Future<Alarm?> updateAlarmTime(int alarmId, TimeOfDay newTime) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var auth = await prefs.getString("auth");
+    if (auth == null)
+      return null;
+    var encodedAuth = Uri.encodeComponent(auth);
+    var encodedTime = Uri.encodeComponent(formatToASPNET(newTime));
+    http.Response response = await http.put(
+        Uri.parse("$serverAddress/api/Alarm/SetAlarmTime/$alarmId?newTime=$encodedTime&authentication=$encodedAuth"));
+    if (response.statusCode != 200)
+      return null;
+    final alarm = jsonDecode(response.body);
+    return new Alarm(alarm['id'], alarm['timesAccepted'],
+        DateTime.parse(alarm['time']), alarm['daysSet']);
+  }
+
+  String formatToASPNET(TimeOfDay timeOfDay) {
+    return '${timeOfDay.hour.toString().padLeft(2, '0')}:${timeOfDay.minute.toString().padLeft(2, '0')}:00';
   }
 
 }
