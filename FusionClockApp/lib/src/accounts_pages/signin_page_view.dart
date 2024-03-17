@@ -9,7 +9,7 @@ import 'decorated_field.dart';
 class LoginPageView extends StatefulWidget {
   const LoginPageView({Key? key}) : super(key: key);
 
-  static const routeName = '/login';
+  static const routeName = '/';
 
   @override
   State<LoginPageView> createState() => RegisterPageState();

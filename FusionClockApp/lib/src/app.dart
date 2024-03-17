@@ -75,6 +75,10 @@ class MyApp extends StatelessWidget {
                 alarmLogic.setContext(context);
                 alarmLogic.currentRoute = routeSettings.name;
                 switch (routeSettings.name) {
+                  case LoginPageView.routeName:
+                    return const LoginPageView();
+                  case RegisterPageView.routeName:
+                    return const RegisterPageView();
                   case HomePageView.routeName:
                     return const HomePageView();
                   case SettingsView.routeName:
@@ -82,14 +86,10 @@ class MyApp extends StatelessWidget {
                   case AlarmPageView.routeName:
                     //TODO: Fix me
                     return const AlarmPageView(alarmId: 1);
-                  case RegisterPageView.routeName:
-                    return const RegisterPageView();
-                  case LoginPageView.routeName:
-                    return const LoginPageView();
                   case FriendsPageView.routeName:
                     return const FriendsPageView();
                   default:
-                    return const HomePageView();
+                    return const LoginPageView();
                 }
               },
             );
