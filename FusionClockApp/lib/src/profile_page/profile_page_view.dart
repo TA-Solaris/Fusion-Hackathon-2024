@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fusionclock/src/accounts_pages/register_page_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../accounts_pages/signin_page_view.dart';
@@ -16,10 +15,11 @@ class ProfilePageView extends StatefulWidget {
 
 class ProfilePageState extends State<ProfilePageView> with BackEnd {
   List<Widget> widgets = [];
+  int maxStreak = 0;
 
   void checkAuth(BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var auth = await prefs.getString("auth");
+    var auth = prefs.getString("auth");
     if ((auth == null) && context.mounted) {
       Navigator.pushReplacementNamed(context, LoginPageView.routeName);
     }
@@ -28,11 +28,21 @@ class ProfilePageState extends State<ProfilePageView> with BackEnd {
   @override
   void initState() {
     super.initState();
+    getAlarms().then((value) {
+      if (value != null) {
+        maxStreak = 0;
+        for (var alarm in value) {
+          if (alarm.streak > maxStreak) {
+            maxStreak = alarm.streak;
+          }
+        }
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    checkAuth(context); //TODO enable to force login
+    checkAuth(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -47,9 +57,9 @@ class ProfilePageState extends State<ProfilePageView> with BackEnd {
                   fontSize: 140,
                 ),
               ),
-              const Text(
-                "Streak: 7 days",
-                style: TextStyle(
+              Text(
+                "Streak: $maxStreak days",
+                style: const TextStyle(
                   fontSize: 42,
                 ),
               ),
