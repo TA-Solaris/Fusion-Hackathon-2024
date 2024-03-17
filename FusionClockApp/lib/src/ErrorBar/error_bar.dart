@@ -12,29 +12,28 @@ void showFlashError(BuildContext context, String message) {
         ),
         child: Row(
           children: [
-            Icon(Icons.error, color: Colors.white),
-            SizedBox(width: 10),
+            const Icon(Icons.error, color: Colors.white),
+            const SizedBox(width: 10),
             Expanded(
               child: Text(
                 message,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 overflow: TextOverflow.visible,
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             GestureDetector(
               onTap: () {
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
               },
-              child: Icon(Icons.close, color: Colors.white),
+              child: const Icon(Icons.close, color: Colors.white),
             ),
           ],
         ),
       ),
       backgroundColor: Colors.transparent,
       elevation: 0.0,
-      duration: Duration(seconds: 3),
+      duration: const Duration(seconds: 3),
     ),
   );
 }
-

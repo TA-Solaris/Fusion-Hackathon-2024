@@ -64,10 +64,10 @@ class MyApp extends StatelessWidget {
           // preferred ThemeMode (light, dark, or system default) from the
           // SettingsController to display the correct theme.
           theme: ThemeData(
-            primaryColor: Color.fromARGB(255, 97, 60, 199),
+            primaryColor: const Color.fromARGB(255, 97, 60, 199),
           ),
           darkTheme: ThemeData.dark().copyWith(
-            primaryColor: Color.fromARGB(255, 229, 180, 251),
+            primaryColor: const Color.fromARGB(255, 229, 180, 251),
           ),
           themeMode: settingsController.themeMode,
 

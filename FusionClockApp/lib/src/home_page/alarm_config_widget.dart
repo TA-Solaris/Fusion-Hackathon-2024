@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fusionclock/src/backend_interface/backend.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -68,7 +67,7 @@ class _AlarmConfigState extends State<AlarmConfig> with BackEnd {
             await prefs.setBool('alarm${widget.id}_day$i', daysSelected[i]);
           },
           style: ElevatedButton.styleFrom(
-              fixedSize: Size.fromRadius(
+              fixedSize: const Size.fromRadius(
                   1 /*MediaQuery.of(context).size.width * 0.001*/),
               shape: const CircleBorder(),
               backgroundColor: daysSelected[i]
@@ -109,7 +108,7 @@ class _AlarmConfigState extends State<AlarmConfig> with BackEnd {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (widget.deleteAlarm != null)
-                Expanded(
+                const Expanded(
                   flex: 12,
                   child: SizedBox(
                     width: 1,
@@ -130,7 +129,7 @@ class _AlarmConfigState extends State<AlarmConfig> with BackEnd {
                         fontFamily: 'RobotoMono'),
                   )),
               if (widget.deleteAlarm != null)
-                Expanded(
+                const Expanded(
                   flex: 1,
                   child: SizedBox(
                     width: 1,
@@ -147,7 +146,7 @@ class _AlarmConfigState extends State<AlarmConfig> with BackEnd {
                     ),
                     child: const Icon(Icons.close)),
               if (widget.deleteAlarm != null)
-                Expanded(
+                const Expanded(
                   flex: 9,
                   child: SizedBox(
                     width: 1,

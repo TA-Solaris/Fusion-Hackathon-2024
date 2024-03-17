@@ -53,7 +53,7 @@ class GemPaymentState extends State<GemPayment> {
         // Stub code to navigate to another view
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => PurchaseView()),
+          MaterialPageRoute(builder: (context) => const PurchaseView()),
         );
       },
       child: Container(
@@ -71,7 +71,7 @@ class GemPaymentState extends State<GemPayment> {
               color: Colors.white, // Customize the color as needed
               size: 30.0,
             ),
-            Expanded(child: SizedBox(width: 1)),
+            const Expanded(child: SizedBox(width: 1)),
             Text(
               '${widget.userGemCount}',
               style: const TextStyle(
@@ -80,7 +80,7 @@ class GemPaymentState extends State<GemPayment> {
                 color: Colors.white,
               ),
             ),
-            Expanded(child: SizedBox(width: 1)),
+            const Expanded(child: SizedBox(width: 1)),
             const Icon(
               Icons.shopping_cart, // Use the shopping cart icon
               color: Colors.white, // Customize the color as needed

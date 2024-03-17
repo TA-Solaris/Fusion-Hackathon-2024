@@ -7,7 +7,7 @@ import '../ErrorBar/error_bar.dart';
 import 'decorated_field.dart';
 
 class LoginPageView extends StatefulWidget {
-  const LoginPageView({Key? key}) : super(key: key);
+  const LoginPageView({super.key});
 
   static const routeName = '/';
 

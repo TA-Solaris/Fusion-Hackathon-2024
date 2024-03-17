@@ -40,7 +40,7 @@ class AlarmLogic {
     //Load alarm time
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     numAlarms = prefs.getInt('num_alarms') ?? 1;
-    alarmTime = List.filled(numAlarms, TimeOfDay(hour: 7, minute: 30));
+    alarmTime = List.filled(numAlarms, const TimeOfDay(hour: 7, minute: 30));
     daysSelected = List.filled(
         numAlarms, List<bool>.filled(5, true) + List<bool>.filled(2, false));
     for (int n = 0; n < numAlarms; n++) {

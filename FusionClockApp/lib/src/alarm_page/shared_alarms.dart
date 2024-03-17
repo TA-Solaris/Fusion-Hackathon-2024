@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:fusionclock/src/backend_interface/backend.dart';
 
 import 'package:flutter/material.dart';

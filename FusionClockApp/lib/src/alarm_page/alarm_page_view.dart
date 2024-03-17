@@ -26,7 +26,7 @@ class _AlarmPageViewState extends State<AlarmPageView> with BackEnd {
   void playSong() async {
     await player.play(AssetSource('sounds/alarms/theelevatorbossanova.mp3'));
   }
-  
+
   late Timer timer;
 
   int peopleWaking = 0;
@@ -50,48 +50,50 @@ class _AlarmPageViewState extends State<AlarmPageView> with BackEnd {
   }
 
   void getTimeString() {
-    final DateTime now = DateTime.now();
-
-    getSharedAlarmCount(widget.alarmId)
-      .then((result) => {
-        setState(() {
-          peopleWaking = result?.fellows ?? 0;
-          emojiCounts = result?.emojis ?? [];
-          if (emojiCounts.length < 5)
-            return;
-          // Display emojis
-          int previousCount0 = 0;
-          int previousCount1 = 0;
-          int previousCount2 = 0;
-          int previousCount3 = 0;
-          int previousCount4 = 0;
-          for (int i = 0; i < 30; i++)
-          {
-            Timer(Duration(milliseconds: (1000 / 30 * i).round()), () {
-              int emojisToSend0 = (emojiCounts[0] * (i / 30.0)).round();
-              int emojisToSend1 = (emojiCounts[1] * (i / 30.0)).round();
-              int emojisToSend2 = (emojiCounts[2] * (i / 30.0)).round();
-              int emojisToSend3 = (emojiCounts[3] * (i / 30.0)).round();
-              int emojisToSend4 = (emojiCounts[4] * (i / 30.0)).round();
-              for (int i = previousCount0; i < emojisToSend0; i++)
-                addEmoji(0, true);
-              for (int i = previousCount1; i < emojisToSend1; i++)
-                addEmoji(1, true);
-              for (int i = previousCount2; i < emojisToSend2; i++)
-                addEmoji(2, true);
-              for (int i = previousCount3; i < emojisToSend3; i++)
-                addEmoji(3, true);
-              for (int i = previousCount4; i < emojisToSend4; i++)
-                addEmoji(4, true);
-              previousCount0 = emojisToSend0;
-              previousCount1 = emojisToSend1;
-              previousCount2 = emojisToSend2;
-              previousCount3 = emojisToSend3;
-              previousCount4 = emojisToSend4;
-            });
-          }
-        })
-      });
+    getSharedAlarmCount(widget.alarmId).then((result) => {
+          setState(() {
+            peopleWaking = result?.fellows ?? 0;
+            emojiCounts = result?.emojis ?? [];
+            if (emojiCounts.length < 5) {
+              return;
+            }
+            // Display emojis
+            int previousCount0 = 0;
+            int previousCount1 = 0;
+            int previousCount2 = 0;
+            int previousCount3 = 0;
+            int previousCount4 = 0;
+            for (int i = 0; i < 30; i++) {
+              Timer(Duration(milliseconds: (1000 / 30 * i).round()), () {
+                int emojisToSend0 = (emojiCounts[0] * (i / 30.0)).round();
+                int emojisToSend1 = (emojiCounts[1] * (i / 30.0)).round();
+                int emojisToSend2 = (emojiCounts[2] * (i / 30.0)).round();
+                int emojisToSend3 = (emojiCounts[3] * (i / 30.0)).round();
+                int emojisToSend4 = (emojiCounts[4] * (i / 30.0)).round();
+                for (int i = previousCount0; i < emojisToSend0; i++) {
+                  addEmoji(0, true);
+                }
+                for (int i = previousCount1; i < emojisToSend1; i++) {
+                  addEmoji(1, true);
+                }
+                for (int i = previousCount2; i < emojisToSend2; i++) {
+                  addEmoji(2, true);
+                }
+                for (int i = previousCount3; i < emojisToSend3; i++) {
+                  addEmoji(3, true);
+                }
+                for (int i = previousCount4; i < emojisToSend4; i++) {
+                  addEmoji(4, true);
+                }
+                previousCount0 = emojisToSend0;
+                previousCount1 = emojisToSend1;
+                previousCount2 = emojisToSend2;
+                previousCount3 = emojisToSend3;
+                previousCount4 = emojisToSend4;
+              });
+            }
+          })
+        });
   }
 
   void addEmoji(int emojiId, bool silent) {
@@ -115,8 +117,7 @@ class _AlarmPageViewState extends State<AlarmPageView> with BackEnd {
       default:
         return;
     }
-    if (!silent)
-    { 
+    if (!silent) {
       sendEmoji(emojiId);
     }
     setState(() {
@@ -125,8 +126,10 @@ class _AlarmPageViewState extends State<AlarmPageView> with BackEnd {
           left: MediaQuery.of(context).size.width / 2 - 25,
           bottom: 80,
           child: TweenAnimationBuilder(
-            duration: Duration(seconds: 3),
-            tween: Tween(begin: Offset(0, 0), end: Offset(Random.secure().nextDouble() * 100 - 50, -300)),
+            duration: const Duration(seconds: 3),
+            tween: Tween(
+                begin: const Offset(0, 0),
+                end: Offset(Random.secure().nextDouble() * 100 - 50, -300)),
             builder: (BuildContext context, Offset offset, Widget? child) {
               return Transform.translate(
                 offset: offset,
@@ -134,7 +137,7 @@ class _AlarmPageViewState extends State<AlarmPageView> with BackEnd {
                   opacity: max(0, 1 - offset.dy.abs() / 100),
                   child: Text(
                     emoji,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 40,
                       color: Colors.white,
                       decoration: TextDecoration.none,
@@ -178,7 +181,8 @@ class _AlarmPageViewState extends State<AlarmPageView> with BackEnd {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const AlarmPageTime(),
-                SharedAlarms(alarmId: widget.alarmId, peopleCount: peopleWaking),
+                SharedAlarms(
+                    alarmId: widget.alarmId, peopleCount: peopleWaking),
                 const SizedBox(height: 100),
                 Dismissible(
                   key: UniqueKey(),
@@ -192,7 +196,7 @@ class _AlarmPageViewState extends State<AlarmPageView> with BackEnd {
                       borderRadius: BorderRadius.circular(20),
                       color: const Color.fromARGB(59, 179, 179, 179),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Swipe to dismiss ➤',
                       style: TextStyle(
                         color: Colors.white,
@@ -209,83 +213,78 @@ class _AlarmPageViewState extends State<AlarmPageView> with BackEnd {
         }),
         OverlayEntry(builder: (BuildContext context) {
           return Positioned(
-              bottom: 20,
-              left: MediaQuery.of(context).size.width / 2 - 30,
-              child: GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container(
-                        width: 320,
-                        padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-                        ),
-                        child: Row(
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                addEmoji(0, false);
-                                Navigator.pop(context);
-                              },
-                              child: Text("😀"),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                addEmoji(1, false);
-                                Navigator.pop(context);
-                              },
-                              child: Text("😂"),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                addEmoji(2, false);
-                                Navigator.pop(context);
-                              },
-                              child: Text("😍"),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                addEmoji(3, false);
-                                Navigator.pop(context);
-                              },
-                              child: Text("😎"),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                addEmoji(4, false);
-                                Navigator.pop(context);
-                              },
-                              child: Text("🥳"),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.emoji_emotions,
-                    color: Colors.white,
-                  ),
+            bottom: 20,
+            left: MediaQuery.of(context).size.width / 2 - 30,
+            child: GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                      width: 320,
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+                      ),
+                      child: Row(
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              addEmoji(0, false);
+                              Navigator.pop(context);
+                            },
+                            child: const Text("😀"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              addEmoji(1, false);
+                              Navigator.pop(context);
+                            },
+                            child: const Text("😂"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              addEmoji(2, false);
+                              Navigator.pop(context);
+                            },
+                            child: const Text("😍"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              addEmoji(3, false);
+                              Navigator.pop(context);
+                            },
+                            child: const Text("😎"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              addEmoji(4, false);
+                              Navigator.pop(context);
+                            },
+                            child: const Text("🥳"),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: const BoxDecoration(
+                  color: Colors.blue,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.emoji_emotions,
+                  color: Colors.white,
                 ),
               ),
+            ),
           );
         }),
         OverlayEntry(builder: (BuildContext builder) {
-          return IgnorePointer(
-            ignoring: true,
-            child: Stack(
-              children: emojis
-            )
-          );
+          return IgnorePointer(ignoring: true, child: Stack(children: emojis));
         })
       ],
     );

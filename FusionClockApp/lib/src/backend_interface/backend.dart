@@ -1,15 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:fusionclock/src/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:cookie_jar/cookie_jar.dart';
-import 'package:intl/intl.dart';
 
-import '../ErrorBar/error_bar.dart';
 import '../models/alarm.dart';
 import '../models/sharedAlarm.dart';
 import '../models/userFriend.dart';
@@ -49,7 +43,7 @@ mixin BackEnd {
 
   Future<List<Alarm>?> getAlarms() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var auth = await prefs.getString("auth");
+    var auth = prefs.getString("auth");
     if (auth == null) {
       return null;
     }
@@ -60,7 +54,7 @@ mixin BackEnd {
     List<Alarm> alarmObjects = [];
     for (var alarm in alarms) {
       final user = alarm['user'];
-      alarmObjects.add(new Alarm(
+      alarmObjects.add(Alarm(
           alarm['id'],
           alarm['timesAccepted'],
           DateTime.parse(alarm['time']),
@@ -72,7 +66,7 @@ mixin BackEnd {
 
   Future<SharedAlarm?> getSharedAlarmCount(int alarmId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var auth = await prefs.getString("auth");
+    var auth = prefs.getString("auth");
     if (auth == null) return null;
     var encodedAuth = Uri.encodeComponent(auth);
     http.Response response = await http.get(Uri.parse(
@@ -85,7 +79,7 @@ mixin BackEnd {
 
   Future<List<UserFriend>?> searchUsers(String searchTerm) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var auth = await prefs.getString("auth");
+    var auth = prefs.getString("auth");
     if (auth == null) return null;
     var encodedAuth = Uri.encodeComponent(auth);
     var encodedSearchTerm = Uri.encodeComponent(searchTerm);
@@ -102,7 +96,7 @@ mixin BackEnd {
 
   Future<List<UserFriend>?> getFriends() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var auth = await prefs.getString("auth");
+    var auth = prefs.getString("auth");
     if (auth == null) return null;
     var encodedAuth = Uri.encodeComponent(auth);
     http.Response response = await http.get(Uri.parse(
@@ -117,7 +111,7 @@ mixin BackEnd {
 
   Future<bool> sendFriendRequest(String id) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var auth = await prefs.getString("auth");
+    var auth = prefs.getString("auth");
     if (auth == null) return false;
     var encodedAuth = Uri.encodeComponent(auth);
     var userId = Uri.encodeComponent(id);
@@ -128,7 +122,7 @@ mixin BackEnd {
 
   Future<bool>? acceptFriendRequest(String id) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var auth = await prefs.getString("auth");
+    var auth = prefs.getString("auth");
     if (auth == null) return false;
     var encodedAuth = Uri.encodeComponent(auth);
     http.Response response = await http.post(Uri.parse(
@@ -138,27 +132,27 @@ mixin BackEnd {
 
   Future<bool> ringAlarm(int alarmId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var auth = await prefs.getString("auth");
+    var auth = prefs.getString("auth");
     if (auth == null) return false;
     var encodedAuth = Uri.encodeComponent(auth);
-    http.Response response = await http.put(Uri.parse(
+    await http.put(Uri.parse(
         "$serverAddress/api/Alarm/TriggerAlarm/$alarmId?authentication=$encodedAuth"));
     return true;
   }
 
   Future<bool> stopAlarm(int alarmId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var auth = await prefs.getString("auth");
+    var auth = prefs.getString("auth");
     if (auth == null) return false;
     var encodedAuth = Uri.encodeComponent(auth);
-    http.Response response = await http.put(Uri.parse(
+    await http.put(Uri.parse(
         "$serverAddress/api/Alarm/StopAlarm/$alarmId?authentication=$encodedAuth"));
     return true;
   }
 
   Future<bool> createAlarm(DateTime alarmTime) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var auth = await prefs.getString("auth");
+    var auth = prefs.getString("auth");
     if (auth == null) return false;
     var encodedAuth = Uri.encodeComponent(auth);
     http.Response response = await http.post(
@@ -168,7 +162,7 @@ mixin BackEnd {
 
   Future<bool> deleteAlarm(int id) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var auth = await prefs.getString("auth");
+    var auth = prefs.getString("auth");
     if (auth == null) return false;
     var encodedAuth = Uri.encodeComponent(auth);
     http.Response response = await http.delete(
@@ -178,7 +172,7 @@ mixin BackEnd {
 
   Future<Alarm?> updateAlarmTime(int alarmId, TimeOfDay newTime) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var auth = await prefs.getString("auth");
+    var auth = prefs.getString("auth");
     if (auth == null) return null;
     var encodedAuth = Uri.encodeComponent(auth);
     var encodedTime = Uri.encodeComponent(formatToASPNET(newTime));
@@ -187,7 +181,7 @@ mixin BackEnd {
     if (response.statusCode != 200) return null;
     final alarm = jsonDecode(response.body);
     final user = alarm['user'];
-    return new Alarm(
+    return Alarm(
         alarm['id'],
         alarm['timesAccepted'],
         DateTime.parse(alarm['time']),
@@ -201,7 +195,7 @@ mixin BackEnd {
 
   Future<bool> sendEmoji(int emoji) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var auth = await prefs.getString("auth");
+    var auth = prefs.getString("auth");
     if (auth == null) return false;
     var encodedAuth = Uri.encodeComponent(auth);
     http.Response response = await http.post(Uri.parse(
@@ -211,7 +205,7 @@ mixin BackEnd {
 
   Future<bool> sabotage(String targetId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var auth = await prefs.getString("auth");
+    var auth = prefs.getString("auth");
     if (auth == null) return false;
     var encodedAuth = Uri.encodeComponent(auth);
     var encodedId = Uri.encodeComponent(targetId);

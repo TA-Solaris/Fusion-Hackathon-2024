@@ -43,33 +43,29 @@ class FriendTile extends StatelessWidget {
 
     //Friend request buttons
     if (friendRequest) {
-      row.add(
-        Column(
-          children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
+      row.add(Column(children: [
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
                 shape: const CircleBorder(),
                 padding: const EdgeInsets.only(),
                 fixedSize: const Size.fromRadius(15)),
-              onPressed: () {
-                if (onAccept != null) onAccept!();
-              },
-              child: const Icon(Icons.done)),
-            const SizedBox(
-              height: 4,
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
+            onPressed: () {
+              if (onAccept != null) onAccept!();
+            },
+            child: const Icon(Icons.done)),
+        const SizedBox(
+          height: 4,
+        ),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
                 shape: const CircleBorder(),
                 padding: const EdgeInsets.only(),
                 fixedSize: const Size.fromRadius(15)),
-              onPressed: () {
-                if (onReject != null) onReject!();
-              },
-              child: const Icon(Icons.close))
-          ]
-        )
-      );
+            onPressed: () {
+              if (onReject != null) onReject!();
+            },
+            child: const Icon(Icons.close))
+      ]));
     }
 
     return InkWell(

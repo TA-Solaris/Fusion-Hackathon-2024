@@ -4,12 +4,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class PurchaseView extends StatefulWidget {
+  const PurchaseView({super.key});
+
   @override
   _PurchaseViewState createState() => _PurchaseViewState();
 }
 
 class _PurchaseViewState extends State<PurchaseView> {
-  List<Widget> _fallingGems = [];
+  final List<Widget> _fallingGems = [];
 
   @override
   void initState() {
@@ -20,7 +22,7 @@ class _PurchaseViewState extends State<PurchaseView> {
   Timer? _timer;
 
   void _startFalling() {
-    _timer = Timer.periodic(Duration(milliseconds: 500), (Timer timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 500), (Timer timer) {
       setState(() {
         _fallingGems.add(
           FallingGem(
@@ -41,7 +43,7 @@ class _PurchaseViewState extends State<PurchaseView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Purchase View'),
+        title: const Text('Purchase View'),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -65,42 +67,42 @@ class _PurchaseViewState extends State<PurchaseView> {
         child: Stack(
           children: [
             AnimatedContainer(
-              duration: Duration(seconds: 5),
+              duration: const Duration(seconds: 5),
               color: Colors.transparent,
             ),
             ..._fallingGems,
-            SingleChildScrollView(
+            const SingleChildScrollView(
               child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const SizedBox(height: 20),
-                  PurchaseItem(
-                    gemCount: 60,
-                    price: '\$3.49',
-                    discountPercentage: 0,
-                    imagePath:
-                        'assets/gems.png', // Replace 'assets/gems.png' with your image path
-                  ),
-                  const SizedBox(height: 20),
-                  PurchaseItem(
-                    gemCount: 200,
-                    price: '\$6.49',
-                    discountPercentage: 20,
-                    imagePath:
-                        'assets/gems.png', // Replace 'assets/gems.png' with your image path
-                  ),
-                  const SizedBox(height: 20),
-                  PurchaseItem(
-                    gemCount: 800,
-                    price: '\$13.99',
-                    discountPercentage: 40,
-                    imagePath:
-                        'assets/gems.png', // Replace 'assets/gems.png' with your image path
-                  ),
-                  const SizedBox(height: 20),
-                ],
-              ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(height: 20),
+                    PurchaseItem(
+                      gemCount: 60,
+                      price: '\$3.49',
+                      discountPercentage: 0,
+                      imagePath:
+                          'assets/gems.png', // Replace 'assets/gems.png' with your image path
+                    ),
+                    SizedBox(height: 20),
+                    PurchaseItem(
+                      gemCount: 200,
+                      price: '\$6.49',
+                      discountPercentage: 20,
+                      imagePath:
+                          'assets/gems.png', // Replace 'assets/gems.png' with your image path
+                    ),
+                    SizedBox(height: 20),
+                    PurchaseItem(
+                      gemCount: 800,
+                      price: '\$13.99',
+                      discountPercentage: 40,
+                      imagePath:
+                          'assets/gems.png', // Replace 'assets/gems.png' with your image path
+                    ),
+                    SizedBox(height: 20),
+                  ],
+                ),
               ),
             ),
           ],
@@ -111,7 +113,7 @@ class _PurchaseViewState extends State<PurchaseView> {
 }
 
 class FallingGem extends StatefulWidget {
-  const FallingGem({Key? key}) : super(key: key);
+  const FallingGem({super.key});
 
   @override
   _FallingGemState createState() => _FallingGemState();
@@ -132,7 +134,7 @@ class _FallingGemState extends State<FallingGem> {
   Timer? _timer;
 
   void _startFalling() {
-    _timer = Timer.periodic(Duration(milliseconds: 50), (Timer timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 50), (Timer timer) {
       setState(() {
         _top += 15; // Adjust the speed of falling here
         _rotation += 0.01;
@@ -149,12 +151,12 @@ class _FallingGemState extends State<FallingGem> {
   @override
   Widget build(BuildContext context) {
     return AnimatedPositioned(
-      duration: Duration(milliseconds: 10000),
+      duration: const Duration(milliseconds: 10000),
       top: _top,
       left: Random().nextDouble() * MediaQuery.of(context).size.width,
       child: Transform.rotate(
         angle: _rotation,
-        child: Icon(
+        child: const Icon(
           Icons.diamond,
           color: Colors.white,
           size: 60.0,
@@ -171,12 +173,12 @@ class PurchaseItem extends StatelessWidget {
   final String imagePath;
 
   const PurchaseItem({
-    Key? key,
+    super.key,
     required this.gemCount,
     required this.price,
     required this.discountPercentage,
     required this.imagePath,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +201,7 @@ class PurchaseItem extends StatelessWidget {
         top: 120 - Random().nextDouble() * Random().nextDouble() * 120,
         child: Transform.rotate(
           angle: 2 * pi * 315 / 360,
-          child: Icon(
+          child: const Icon(
             Icons.diamond,
             color: Colors.purple,
           ),
@@ -207,7 +209,7 @@ class PurchaseItem extends StatelessWidget {
       ));
     }
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.blueGrey[100],
         borderRadius: BorderRadius.circular(20),
@@ -267,8 +269,8 @@ class PurchaseItem extends StatelessWidget {
               ),
               Container(
                 transform: Matrix4.rotationZ(0.8),
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: const BoxDecoration(
                   color: Colors.red,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
@@ -277,7 +279,7 @@ class PurchaseItem extends StatelessWidget {
                 ),
                 child: Text(
                   '${discountPercentage.toString()}% OFF',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
@@ -285,18 +287,18 @@ class PurchaseItem extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             gemCount.toString(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 40,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             'Price: $price',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
             ),
           ),

@@ -1,8 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:fusionclock/src/accounts_pages/register_page_view.dart';
-import 'package:fusionclock/src/alarm_page/alarm_logic.dart';
 import 'package:fusionclock/src/alarm_page/alarm_page_time.dart';
 import 'package:fusionclock/src/home_page/alarm_config_widget.dart';
 import 'package:fusionclock/src/payments/gem_payment.dart';
@@ -10,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../accounts_pages/signin_page_view.dart';
 import '../friends/friends_page_view.dart';
-import '../models/alarm.dart';
 import '../settings/settings_view.dart';
 import '../alarm_page/alarm_page_view.dart';
 import '../backend_interface/backend.dart';
@@ -31,7 +26,7 @@ class HomePageState extends State<HomePageView> with BackEnd {
 
   void checkAuth(BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var auth = await prefs.getString("auth");
+    var auth = prefs.getString("auth");
     if ((auth == null) && context.mounted) {
       Navigator.pushReplacementNamed(context, LoginPageView.routeName);
     }

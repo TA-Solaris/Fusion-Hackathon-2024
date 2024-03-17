@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../accounts_pages/signin_page_view.dart';
 import '../backend_interface/backend.dart';
-import '../models/userFriend.dart';
 
 class ProfilePageView extends StatefulWidget {
   const ProfilePageView({super.key});
@@ -88,7 +87,7 @@ class ProfilePageState extends State<ProfilePageView> with BackEnd {
                                 onPressed: () {
                                   sabotage(friend.id);
                                 },
-                                child: Text(
+                                child: const Text(
                                   "Sabotage",
                                   style: TextStyle(fontSize: 14),
                                 )),
@@ -126,12 +125,12 @@ class ProfilePageState extends State<ProfilePageView> with BackEnd {
                   fontSize: 42,
                 ),
               ),
-              SizedBox(height: 100),
-              Text(
+              const SizedBox(height: 100),
+              const Text(
                 "Friends",
                 style: TextStyle(fontSize: 32),
               ),
-              Divider(),
+              const Divider(),
               ...friendStuff
             ],
           ),

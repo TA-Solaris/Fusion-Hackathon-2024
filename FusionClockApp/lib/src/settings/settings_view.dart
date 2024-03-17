@@ -27,7 +27,7 @@ class SettingsView extends StatelessWidget {
         // SettingsController is updated, which rebuilds the MaterialApp.
         child: Column(
           children: [
-            Align(
+            const Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 "Application Theme",
@@ -44,7 +44,7 @@ class SettingsView extends StatelessWidget {
               value: controller.themeMode,
               // Call the updateThemeMode method any time the user selects a theme.
               onChanged: controller.updateThemeMode,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
+              borderRadius: const BorderRadius.all(Radius.circular(16)),
               padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
               isExpanded: true,
               items: const [
