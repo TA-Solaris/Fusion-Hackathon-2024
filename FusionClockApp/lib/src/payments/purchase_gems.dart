@@ -69,10 +69,12 @@ class _PurchaseViewState extends State<PurchaseView> {
               color: Colors.transparent,
             ),
             ..._fallingGems,
-            Center(
+            SingleChildScrollView(
+              child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  const SizedBox(height: 20),
                   PurchaseItem(
                     gemCount: 60,
                     price: '\$3.49',
@@ -80,6 +82,7 @@ class _PurchaseViewState extends State<PurchaseView> {
                     imagePath:
                         'assets/gems.png', // Replace 'assets/gems.png' with your image path
                   ),
+                  const SizedBox(height: 20),
                   PurchaseItem(
                     gemCount: 200,
                     price: '\$6.49',
@@ -87,6 +90,7 @@ class _PurchaseViewState extends State<PurchaseView> {
                     imagePath:
                         'assets/gems.png', // Replace 'assets/gems.png' with your image path
                   ),
+                  const SizedBox(height: 20),
                   PurchaseItem(
                     gemCount: 800,
                     price: '\$13.99',
@@ -94,7 +98,9 @@ class _PurchaseViewState extends State<PurchaseView> {
                     imagePath:
                         'assets/gems.png', // Replace 'assets/gems.png' with your image path
                   ),
+                  const SizedBox(height: 20),
                 ],
+              ),
               ),
             ),
           ],
