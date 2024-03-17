@@ -71,7 +71,7 @@ class GemPaymentState extends State<GemPayment> {
               color: Colors.white, // Customize the color as needed
               size: 30.0,
             ),
-            const SizedBox(width: 5),
+            Expanded(child: SizedBox(width: 1)),
             Text(
               '${widget.userGemCount}',
               style: const TextStyle(
@@ -80,7 +80,7 @@ class GemPaymentState extends State<GemPayment> {
                 color: Colors.white,
               ),
             ),
-            const SizedBox(width: 12),
+            Expanded(child: SizedBox(width: 1)),
             const Icon(
               Icons.shopping_cart, // Use the shopping cart icon
               color: Colors.white, // Customize the color as needed
