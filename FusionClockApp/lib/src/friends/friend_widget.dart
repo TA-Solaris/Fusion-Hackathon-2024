@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:fusionclock/src/models/userFriend.dart';
 
 class FriendTile extends StatelessWidget {
-  final String email;
+  final UserFriend userFriend;
   final bool friendRequest;
   final Function? onAccept;
   final Function? onReject;
   const FriendTile(
       {super.key,
-      required this.email,
+      required this.userFriend,
       required this.friendRequest,
       this.onAccept,
       this.onReject});
@@ -32,7 +33,7 @@ class FriendTile extends StatelessWidget {
       ),
       Expanded(
           child: Text(
-        email,
+        userFriend.username,
         textAlign: TextAlign.justify,
         style: const TextStyle(
           fontSize: 20,
@@ -49,7 +50,7 @@ class FriendTile extends StatelessWidget {
                 padding: const EdgeInsets.only(),
                 fixedSize: const Size.fromRadius(25)),
             onPressed: () {
-              onAccept!();
+              if (onAccept != null) onAccept!();
             },
             child: const Icon(Icons.done)),
         const SizedBox(
@@ -61,7 +62,7 @@ class FriendTile extends StatelessWidget {
                 padding: const EdgeInsets.only(),
                 fixedSize: const Size.fromRadius(25)),
             onPressed: () {
-              onAccept!();
+              if (onReject != null) onReject!();
             },
             child: const Icon(Icons.close))
       ]);

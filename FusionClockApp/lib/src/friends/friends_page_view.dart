@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fusionclock/src/accounts_pages/decorated_field.dart';
+import 'package:fusionclock/src/backend_interface/backend.dart';
 import 'package:fusionclock/src/friends/friend_widget.dart';
+import 'package:fusionclock/src/models/userFriend.dart';
 
 class FriendsPageView extends StatefulWidget {
   const FriendsPageView({
@@ -13,7 +15,10 @@ class FriendsPageView extends StatefulWidget {
   State<FriendsPageView> createState() => _FriendsPageState();
 }
 
-class _FriendsPageState extends State<FriendsPageView> {
+class _FriendsPageState extends State<FriendsPageView> with BackEnd {
+  final TextEditingController searchController = TextEditingController();
+  List<UserFriend> users = [];
+
   @override
   void initState() {
     super.initState();
@@ -24,10 +29,11 @@ class _FriendsPageState extends State<FriendsPageView> {
     List<Widget> widgets = [
       Row(
         children: [
-          const Expanded(
+          Expanded(
             child: DecoratedField(
               text: "Search Friends",
               icon: Icons.search,
+              controller: searchController,
             ),
           ),
           const SizedBox(
@@ -38,18 +44,24 @@ class _FriendsPageState extends State<FriendsPageView> {
                   shape: const CircleBorder(),
                   fixedSize: const Size.fromRadius(25),
                   padding: const EdgeInsets.only(left: 10, right: 10)),
-              onPressed: () {},
+              onPressed: () async {
+                List<UserFriend> foundUsers =
+                    await searchUsers(searchController.text) ?? [];
+                setState(() {
+                  users = foundUsers;
+                });
+              },
               child: const Text(
                 "GO",
                 style: TextStyle(fontSize: 20),
               ))
         ],
       ),
-      Divider()
+      const Divider()
     ];
-    for (int i = 0; i < 4; i++) {
-      widgets.add(const FriendTile(
-        email: "email@email.com",
+    for (int i = 0; i < users.length; i++) {
+      widgets.add(FriendTile(
+        userFriend: users[i],
         friendRequest: true,
       ));
     }
