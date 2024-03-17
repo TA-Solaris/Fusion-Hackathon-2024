@@ -10,7 +10,7 @@ class AlarmLogic {
   Timer? timer;
   TimeOfDay alarmTime = TimeOfDay.fromDateTime(DateTime.now());
   String? currentRoute;
-  List<bool> daysSelected = List.filled(7, false);
+  List<bool> daysSelected = List.filled(5, true) + List.filled(2, false);
 
   void setContext(BuildContext context) {
     this.context = context;

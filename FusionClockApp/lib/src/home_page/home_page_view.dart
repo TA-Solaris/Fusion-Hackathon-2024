@@ -18,7 +18,7 @@ class HomePageView extends StatefulWidget {
 class HomePageState extends State<HomePageView> {
   TimeOfDay alarmTime = TimeOfDay.fromDateTime(DateTime.now());
   final MaterialColor theme = Colors.pink;
-  List<bool> daysSelected = List.filled(7, false);
+  List<bool> daysSelected = List.filled(5, true) + List.filled(2, false);
 
   String formatTime() {
     return "${alarmTime.hour.toString().padLeft(2, '0')}:${alarmTime.minute.toString().padLeft(2, '0')}";
