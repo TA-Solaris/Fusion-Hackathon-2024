@@ -25,9 +25,7 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
   Future<bool> submitButton() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var result = await register(emailTextController.text, passwordTextController.text);
-    if (result == null)
-      return false;
-    return true;
+    return result;
   }
 
   @override
