@@ -58,9 +58,6 @@ class HomePageState extends State<HomePageView> with BackEnd {
                   context, RegisterPageView.routeName);
             },
           ),
-          const SizedBox(
-            width: 40,
-          )
         ],
       ),
       body: const SingleChildScrollView(
