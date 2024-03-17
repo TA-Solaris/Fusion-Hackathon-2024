@@ -40,8 +40,8 @@ class HomePageState extends State<HomePageView> with BackEnd {
             {
               setState(() {
                 widgets.clear();
-                widgets
-                    .add(Center(child: AlarmPageTime(textColor: Colors.pink)));
+                widgets.add(
+                    const Center(child: AlarmPageTime(textColor: Colors.pink)));
                 for (var alarm in value) {
                   widgets.add(AlarmConfig(id: alarm.id));
                 }
@@ -96,18 +96,28 @@ class HomePageState extends State<HomePageView> with BackEnd {
                   ),
                   Column(
                     children: [
-                      Text(
-                        "🔥",
-                        style: const TextStyle(
-                          fontSize: 140,
-                        )
-                      ),
-                      Text(
-                        "Streak: 7 days",
-                        style: const TextStyle(
-                          fontSize: 42,
-                        )
-                      )
+                      if (widgets.length < 5)
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.purple.shade200),
+                            onPressed: () {
+                              setState(() {
+                                widgets
+                                    .add(AlarmConfig(id: widgets.length + 1));
+                              });
+                            },
+                            child: const SizedBox(
+                                width: 400,
+                                height: 50,
+                                child: Icon(Icons.add))),
+                      Text("🔥",
+                          style: TextStyle(
+                            fontSize: 140,
+                          )),
+                      Text("Streak: 7 days",
+                          style: TextStyle(
+                            fontSize: 42,
+                          ))
                     ],
                   ),
                 ],
@@ -115,7 +125,7 @@ class HomePageState extends State<HomePageView> with BackEnd {
             );
           }),
           OverlayEntry(builder: (BuildContext context) {
-            return Positioned(
+            return const Positioned(
               top: 15,
               right: 30,
               child: GemPayment(),
