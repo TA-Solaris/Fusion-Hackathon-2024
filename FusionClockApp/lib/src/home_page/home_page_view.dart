@@ -20,7 +20,7 @@ class HomePageState extends State<HomePageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FusionClock'),
+        title: const Text('Fusion Clock'),
         actions: [
           IconButton(
             // TEMP BUTTON
