@@ -50,7 +50,33 @@ class ProfilePageState extends State<ProfilePageView> with BackEnd {
             // wow friends lets go this is pog
             friendStuff.add(Container(
               color: Theme.of(context).cardColor,
-              child: Text(friend.username),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 24, 8, 24),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: const CircleBorder(),
+                            fixedSize: const Size.fromRadius(40),
+                            padding: const EdgeInsets.only(left: 8, right: 8)),
+                        onPressed: () {},
+                        child: const Text(
+                          "",
+                        )),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      child: Text(
+                    friend.username,
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(
+                      fontSize: 20,
+                    ),
+                  )),
+                ],
+              ),
             ));
           }
         })

@@ -110,8 +110,7 @@ mixin BackEnd {
     final possibleFriends = jsonDecode(response.body) as List<dynamic>;
     List<UserFriend> users = [];
     for (var pfriend in possibleFriends) {
-      users.add(UserFriend(pfriend["userId"], pfriend["userName"],
-          pfriend["isFriend"] == "true"));
+      users.add(UserFriend(pfriend["id"], pfriend["userName"], true));
     }
     return users;
   }
