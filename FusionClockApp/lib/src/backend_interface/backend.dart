@@ -13,12 +13,11 @@ mixin BackEnd {
   String serverAddress = 'https://xfrktmh0-7240.uks1.devtunnels.ms';
 
   Future<bool> login(String email, String password) async {
-    http.Response response = await http.get(
-        Uri.parse("$serverAddress/api/attemptLogin?username=$email&password=$password"));
+    http.Response response = await http.get(Uri.parse(
+        "$serverAddress/api/attemptLogin?username=$email&password=$password"));
 
-    if (response.statusCode != 200)
-      return false;
-    
+    if (response.statusCode != 200) return false;
+
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("auth", response.body);
     return true;
@@ -46,16 +45,15 @@ mixin BackEnd {
   Future<List<Alarm>?> getAlarms() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var auth = await prefs.getString("auth");
-    if (auth == null)
-      return null;
+    if (auth == null) return null;
     var encodedAuth = Uri.encodeComponent(auth);
-    http.Response response = await http.get(
-        Uri.parse("$serverAddress/api/Alarm/GetAll?authentication=$encodedAuth"));
+    http.Response response = await http.get(Uri.parse(
+        "$serverAddress/api/Alarm/GetAll?authentication=$encodedAuth"));
     final alarms = jsonDecode(response.body) as List<dynamic>;
     List<Alarm> alarmObjects = [];
-    for (var alarm in alarms)
-    {
-      alarmObjects.add(new Alarm(alarm['id'], alarm['timesAccepted'], DateTime.parse(alarm['time']), alarm['daysSet']));
+    for (var alarm in alarms) {
+      alarmObjects.add(new Alarm(alarm['id'], alarm['timesAccepted'],
+          DateTime.parse(alarm['time']), alarm['daysSet']));
     }
     return alarmObjects;
   }
@@ -63,30 +61,26 @@ mixin BackEnd {
   Future<int?> getSharedAlarmCount(int alarmId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var auth = await prefs.getString("auth");
-    if (auth == null)
-      return null;
+    if (auth == null) return null;
     var encodedAuth = Uri.encodeComponent(auth);
-    http.Response response = await http.get(
-        Uri.parse("$serverAddress/api/Alarm/GetSharedAlarms/$alarmId?authentication=$encodedAuth"));
+    http.Response response = await http.get(Uri.parse(
+        "$serverAddress/api/Alarm/GetSharedAlarms/$alarmId?authentication=$encodedAuth"));
     return int.parse(response.body);
   }
 
   Future<List<UserFriend>?> searchUsers(String searchTerm) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var auth = await prefs.getString("auth");
-    if (auth == null)
-      return null;
+    if (auth == null) return null;
     var encodedAuth = Uri.encodeComponent(auth);
     var encodedSearchTerm = Uri.encodeComponent(searchTerm);
-    http.Response response = await http.get(
-        Uri.parse("$serverAddress/api/Friends/Search/$encodedSearchTerm?authentication=$encodedAuth"));
+    http.Response response = await http.get(Uri.parse(
+        "$serverAddress/api/Friends/Search/$encodedSearchTerm?authentication=$encodedAuth"));
     final possibleFriends = jsonDecode(response.body) as List<dynamic>;
     List<UserFriend> users = [];
-    for (var pfriend in possibleFriends)
-    {
+    for (var pfriend in possibleFriends) {
       users.add(new UserFriend(pfriend["userId"], pfriend["userName"]));
     }
     return users;
   }
-
 }

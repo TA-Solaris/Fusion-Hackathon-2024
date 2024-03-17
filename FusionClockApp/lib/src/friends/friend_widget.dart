@@ -50,7 +50,7 @@ class FriendTile extends StatelessWidget {
                 padding: const EdgeInsets.only(),
                 fixedSize: const Size.fromRadius(25)),
             onPressed: () {
-              onAccept!();
+              if (onAccept != null) onAccept!();
             },
             child: const Icon(Icons.done)),
         const SizedBox(
@@ -62,7 +62,7 @@ class FriendTile extends StatelessWidget {
                 padding: const EdgeInsets.only(),
                 fixedSize: const Size.fromRadius(25)),
             onPressed: () {
-              onAccept!();
+              if (onReject != null) onReject!();
             },
             child: const Icon(Icons.close))
       ]);
