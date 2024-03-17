@@ -50,8 +50,7 @@ mixin BackEnd {
   Future<List<Alarm>?> getAlarms() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var auth = await prefs.getString("auth");
-    if (auth == null)
-    {
+    if (auth == null) {
       return null;
     }
     var encodedAuth = Uri.encodeComponent(auth);
@@ -90,7 +89,8 @@ mixin BackEnd {
     final possibleFriends = jsonDecode(response.body) as List<dynamic>;
     List<UserFriend> users = [];
     for (var pfriend in possibleFriends) {
-      users.add(new UserFriend(pfriend["userId"], pfriend["userName"]));
+      users.add(UserFriend(pfriend["userId"], pfriend["userName"],
+          pfriend["isFriend"] == "true"));
     }
     return users;
   }
@@ -176,11 +176,10 @@ mixin BackEnd {
   Future<bool> sendEmoji(int emoji) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var auth = await prefs.getString("auth");
-    if (auth == null)
-      return false;
+    if (auth == null) return false;
     var encodedAuth = Uri.encodeComponent(auth);
-    http.Response response = await http.post(
-        Uri.parse("$serverAddress/api/Alarm/SendEmoji/$emoji?authentication=$encodedAuth"));
+    http.Response response = await http.post(Uri.parse(
+        "$serverAddress/api/Alarm/SendEmoji/$emoji?authentication=$encodedAuth"));
     return response.statusCode == 200;
   }
 }
