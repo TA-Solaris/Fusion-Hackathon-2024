@@ -46,16 +46,16 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 60),
+              SizedBox(height: 40),
               Text(
                 "Sign Up",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 60,
+                  fontSize: 40,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               DecoratedField(
                 icon: Icons.email,
                 text: "Email",
@@ -95,7 +95,7 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
                   },
                   style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       backgroundColor: themeColor),
                   child: const Text('Sign Up',
                       style: TextStyle(fontSize: 20, color: Colors.white)),
@@ -104,7 +104,7 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
               const Center(
                 child: Text(
                   "OR",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
               Container(
@@ -116,7 +116,7 @@ class RegisterPageState extends State<RegisterPageView> with BackEnd {
                   },
                   style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       backgroundColor: themeColor.shade100),
                   child: Text('Login',
                       style:

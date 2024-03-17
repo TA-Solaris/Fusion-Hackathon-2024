@@ -52,15 +52,16 @@ class RegisterPageState extends State<LoginPageView> with BackEnd {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 60),
+              SizedBox(height: 40),
               Text(
                 "Login",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 60,
+                  fontSize: 40,
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              const SizedBox(height: 30),
               DecoratedField(
                 icon: Icons.email,
                 text: "Email",
@@ -94,7 +95,7 @@ class RegisterPageState extends State<LoginPageView> with BackEnd {
                   },
                   style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       backgroundColor: themeColor),
                   child: const Text('Login',
                       style: TextStyle(fontSize: 20, color: Colors.white)),
