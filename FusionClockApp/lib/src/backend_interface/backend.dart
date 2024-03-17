@@ -72,7 +72,21 @@ mixin BackEnd {
   }
 
   Future<List<UserFriend>?> searchUsers(String searchTerm) async {
-    return null;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var auth = await prefs.getString("auth");
+    if (auth == null)
+      return null;
+    var encodedAuth = Uri.encodeComponent(auth);
+    var encodedSearchTerm = Uri.encodeComponent(searchTerm);
+    http.Response response = await http.get(
+        Uri.parse("$serverAddress/api/Friends/Search/$encodedSearchTerm?authentication=$encodedAuth"));
+    final possibleFriends = jsonDecode(response.body) as List<dynamic>;
+    List<UserFriend> users = [];
+    for (var pfriend in possibleFriends)
+    {
+      users.add(new UserFriend(pfriend["userId"], pfriend["userName"]));
+    }
+    return users;
   }
 
 }
