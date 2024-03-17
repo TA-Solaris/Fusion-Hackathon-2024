@@ -50,8 +50,13 @@ mixin BackEnd {
     var encodedAuth = Uri.encodeComponent(auth);
     http.Response response = await http.get(
         Uri.parse("$serverAddress/api/Alarm/GetAll?authentication=$encodedAuth"));
-    print(auth);
-    print(response.body);
+    final alarms = jsonDecode(response.body) as List<dynamic>;
+    List<Alarm> alarmObjects = [];
+    for (var alarm in alarms)
+    {
+      alarmObjects.add(new Alarm(alarm['id'], alarm['timesAccepted'], DateTime.parse(alarm['time']), alarm['daysSet']));
+    }
+    return alarmObjects;
   }
 
 }

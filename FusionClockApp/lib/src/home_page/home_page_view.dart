@@ -21,6 +21,12 @@ class HomePageView extends StatefulWidget {
 class HomePageState extends State<HomePageView> with BackEnd {
 
   @override
+  void initState() {
+    super.initState();
+    getAlarms();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
