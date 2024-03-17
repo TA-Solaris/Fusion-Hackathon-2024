@@ -127,7 +127,7 @@ class HomePageState extends State<HomePageView> with BackEnd {
                     ),
                     Column(
                       children: [
-                        if (widgets.length < 5)
+                        if (widgets.length < 20)
                           ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   backgroundColor:
