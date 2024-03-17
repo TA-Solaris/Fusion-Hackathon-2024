@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:fusionclock/src/backend_interface/backend.dart';
 
 import 'package:fusionclock/src/home_page/home_page_view.dart';
 import 'package:fusionclock/src/alarm_page/alarm_page_time.dart';
@@ -15,7 +16,7 @@ class AlarmPageView extends StatefulWidget {
   State<AlarmPageView> createState() => _AlarmPageViewState();
 }
 
-class _AlarmPageViewState extends State<AlarmPageView> {
+class _AlarmPageViewState extends State<AlarmPageView> with BackEnd{
   final player = AudioPlayer();
 
   void playSong() async {
@@ -25,6 +26,7 @@ class _AlarmPageViewState extends State<AlarmPageView> {
   @override
   void dispose() {
     player.dispose();
+    stopAlarm(widget.alarmId);
     super.dispose();
   }
 
@@ -32,6 +34,7 @@ class _AlarmPageViewState extends State<AlarmPageView> {
   void initState() {
     super.initState();
     playSong();
+    ringAlarm(widget.alarmId);
   }
 
   @override
