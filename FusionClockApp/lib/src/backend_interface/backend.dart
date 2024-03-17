@@ -89,47 +89,52 @@ mixin BackEnd {
   Future<bool> ringAlarm(int alarmId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var auth = await prefs.getString("auth");
-    if (auth == null)
-      return false;
+    if (auth == null) return false;
     var encodedAuth = Uri.encodeComponent(auth);
-    http.Response response = await http.put(
-        Uri.parse("$serverAddress/api/Alarm/TriggerAlarm/$alarmId?authentication=$encodedAuth"));
+    http.Response response = await http.put(Uri.parse(
+        "$serverAddress/api/Alarm/TriggerAlarm/$alarmId?authentication=$encodedAuth"));
     return true;
   }
 
   Future<bool> stopAlarm(int alarmId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var auth = await prefs.getString("auth");
-    if (auth == null)
-      return false;
+    if (auth == null) return false;
     var encodedAuth = Uri.encodeComponent(auth);
-    http.Response response = await http.put(
-        Uri.parse("$serverAddress/api/Alarm/StopAlarm/$alarmId?authentication=$encodedAuth"));
+    http.Response response = await http.put(Uri.parse(
+        "$serverAddress/api/Alarm/StopAlarm/$alarmId?authentication=$encodedAuth"));
     return true;
   }
 
   Future<bool> createAlarm(DateTime alarmTime) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var auth = await prefs.getString("auth");
-    if (auth == null)
-      return false;
+    if (auth == null) return false;
     var encodedAuth = Uri.encodeComponent(auth);
     http.Response response = await http.post(
         Uri.parse("$serverAddress/api/Alarm?authentication=$encodedAuth"));
     return response.statusCode == 200;
   }
 
+  Future<bool> deleteAlarm(int id) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var auth = await prefs.getString("auth");
+    if (auth == null) return false;
+    var encodedAuth = Uri.encodeComponent(auth);
+    http.Response response = await http.delete(
+        Uri.parse("$serverAddress/api/Alarm/$id?authentication=$encodedAuth"));
+    return response.statusCode == 200;
+  }
+
   Future<Alarm?> updateAlarmTime(int alarmId, TimeOfDay newTime) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var auth = await prefs.getString("auth");
-    if (auth == null)
-      return null;
+    if (auth == null) return null;
     var encodedAuth = Uri.encodeComponent(auth);
     var encodedTime = Uri.encodeComponent(formatToASPNET(newTime));
-    http.Response response = await http.put(
-        Uri.parse("$serverAddress/api/Alarm/SetAlarmTime/$alarmId?newTime=$encodedTime&authentication=$encodedAuth"));
-    if (response.statusCode != 200)
-      return null;
+    http.Response response = await http.put(Uri.parse(
+        "$serverAddress/api/Alarm/SetAlarmTime/$alarmId?newTime=$encodedTime&authentication=$encodedAuth"));
+    if (response.statusCode != 200) return null;
     final alarm = jsonDecode(response.body);
     return new Alarm(alarm['id'], alarm['timesAccepted'],
         DateTime.parse(alarm['time']), alarm['daysSet']);
@@ -138,5 +143,4 @@ mixin BackEnd {
   String formatToASPNET(TimeOfDay timeOfDay) {
     return '${timeOfDay.hour.toString().padLeft(2, '0')}:${timeOfDay.minute.toString().padLeft(2, '0')}:00';
   }
-
 }
